@@ -1,0 +1,47 @@
+<section class="tgx tg-sec s6" id="sec6" aria-labelledby="h6">
+  <div class="tg-wrap">
+    <div class="tg-head tg-rv">
+      <h2 class="tg-h2" id="h6">A Little Thanks Can Make <span class="o">Someone's Day.</span></h2>
+      <p class="tg-body">This Thanksgiving, surprise someone who made your year better with a personalized card they'll want to keep.</p>
+    </div>
+    <div class="cs tg-rv">
+      <div class="cs-stage">
+        <div class="cs-canvas"><canvas id="csCard" width="1500" height="1000" role="img" aria-label="Your card. Drag a sticker to move it, drag its corner to resize."></canvas></div>
+        <p class="cs-hint">Drag stickers to move them. Drag the corner to resize.</p>
+        <div class="cs-tray" id="csTray" hidden><div class="cs-trayh"><span class="tg-label">Your cards</span><button type="button" class="cs-all" id="csAll">Download all</button></div><div class="cs-thumbs" id="csThumbs"></div></div>
+      </div>
+      <form class="cs-panel" id="csForm" novalidate>
+        <div class="cs-tabs" role="tablist">
+          <button type="button" role="tab" class="on" aria-selected="true" data-tab="words">Words</button>
+          <button type="button" role="tab" aria-selected="false" data-tab="look">Background</button>
+          <button type="button" role="tab" aria-selected="false" data-tab="stick">Stickers</button>
+        </div>
+        <div class="cs-pane on" data-pane="words">
+          <div class="cs-f"><label for="csTo">To</label><input id="csTo" type="text" maxlength="32" placeholder="Their name" autocomplete="off"></div>
+          <div class="cs-f"><label for="csMsg">Your message</label>
+            <textarea id="csMsg" rows="3" maxlength="160" placeholder="Write a few words of thanks"></textarea>
+            <div class="cs-chips"><button type="button" class="chip">Thank you for making the hard weeks feel lighter.</button><button type="button" class="chip">You showed up when it mattered most. I noticed, and I'm grateful.</button><button type="button" class="chip">This year was better because you were in it.</button><button type="button" class="chip">Thanks for every quick call that quietly saved the day.</button><button type="button" class="chip">Grateful for your patience, your humour and your spreadsheets.</button><button type="button" class="chip">You made me better at what I do. Thank you.</button></div>
+          </div>
+          <div class="cs-f"><label for="csFrom">From</label><input id="csFrom" type="text" maxlength="32" placeholder="Your name" autocomplete="off"></div>
+          <div class="cs-two">
+            <div class="cs-f"><span class="lbl">Lettering</span><div class="cs-seg" data-k="font" role="radiogroup" aria-label="Lettering"><button type="button" class="on" data-v="print" role="radio" aria-checked="true">Aa Print</button><button type="button" class="" data-v="hand" role="radio" aria-checked="false"><span class="hand">Aa Handwritten</span></button></div></div>
+            <div class="cs-f"><span class="lbl">Words sit</span><div class="cs-seg" data-k="layout" role="radiogroup" aria-label="Text position"><button type="button" class="" data-v="left" role="radio" aria-checked="false">Left</button><button type="button" class="on" data-v="center" role="radio" aria-checked="true">Centre</button><button type="button" class="" data-v="right" role="radio" aria-checked="false">Right</button></div></div>
+          </div>
+        </div>
+        <div class="cs-pane" data-pane="look" hidden>
+          <div class="cs-f"><span class="lbl">Colour</span><div class="cs-sw"><button type="button" class="sw on" data-bg="cream" aria-label="Cream" style="background:linear-gradient(135deg,#FFF8F0,#FDE6D6)"></button><button type="button" class="sw" data-bg="peach" aria-label="Peach" style="background:radial-gradient(circle at 35% 40%,#FFF6EF,#FBCFB9)"></button><button type="button" class="sw" data-bg="ember" aria-label="Ember" style="background:linear-gradient(135deg,#FD6523,#E43124)"></button><button type="button" class="sw" data-bg="sunset" aria-label="Sunset" style="background:linear-gradient(180deg,#F59A5A,#FFE7C2)"></button><button type="button" class="sw" data-bg="night" aria-label="Night" style="background:linear-gradient(135deg,#141A42,#3A3F78)"></button><button type="button" class="sw" data-bg="doodle" aria-label="Doodle" style="background:#FFF7F0"></button></div></div>
+          <div class="cs-f"><span class="lbl">Pattern</span><div class="cs-seg wrap" data-k="pattern" role="radiogroup" aria-label="Pattern"><button type="button" class="on" data-v="none" role="radio" aria-checked="true">None</button><button type="button" class="" data-v="quilt" role="radio" aria-checked="false">Quilt border</button><button type="button" class="" data-v="confetti" role="radio" aria-checked="false">Leaf confetti</button><button type="button" class="" data-v="panel" role="radio" aria-checked="false">Paper panel</button></div></div>
+        </div>
+        <div class="cs-pane" data-pane="stick" hidden>
+          <div class="cs-stk"><button type="button" class="stk" data-s="leaffall" aria-label="Add Falling leaves"><img data-tg-src="leaffall.webp" alt=""></button><button type="button" class="stk" data-s="branch" aria-label="Add Branch & berries"><img data-tg-src="branch.webp" alt=""></button><button type="button" class="stk" data-s="pumpkins3" aria-label="Add Pumpkins"><img data-tg-src="pumpkins3.webp" alt=""></button><button type="button" class="stk" data-s="leafcorner" aria-label="Add Leaf corner"><img data-tg-src="leafcorner.webp" alt=""></button><button type="button" class="stk" data-s="leaves2" aria-label="Add Two leaves"><img data-tg-src="leaves2.webp" alt=""></button><button type="button" class="stk" data-s="pie" aria-label="Add Pie"><img data-tg-src="pie.svg" alt=""></button><button type="button" class="stk" data-s="tomwave" aria-label="Add Tom"><img data-tg-src="tomwave.webp" alt=""></button><button type="button" class="stk" data-s="peek" aria-label="Add Peeking turkey"><img data-tg-src="peek.webp" alt=""></button><button type="button" class="stk" data-s="grassturkey" aria-label="Add Pumpkin patch"><img data-tg-src="grassturkey.webp" alt=""></button></div>
+          <button type="button" class="cs-clear" id="csClear">Remove all stickers</button>
+        </div>
+        <div class="cs-acts">
+          <button type="button" class="btn" id="csGo">Make Their Day <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+          <button type="button" class="btn line" id="csMore"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>Make another</button>
+          <button type="button" class="cs-shuffle" id="csShuffle"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg>Surprise me</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

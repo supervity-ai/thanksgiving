@@ -1,0 +1,464 @@
+<script>
+(() => {
+  // Paste your Jotform form ID here to load it in the pop-up instead of the built-in form.
+  const JOTFORM_ID = '';
+  const m = document.getElementById('m3'), tom = document.getElementById('m3tom'), walk = tom.querySelector('.walk');
+  const fly = document.getElementById('flypile'), carry = document.getElementById('carry');
+  const modal = document.getElementById('amodal'), form = document.getElementById('aform');
+  let started = false, lastFocus = null;
+  const state = (s) => { m.className = m.className.replace(/st-\w+/, 'st-' + s); };
+  const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+  function openForm() {
+    lastFocus = document.activeElement; modal.hidden = false;
+    requestAnimationFrame(() => modal.classList.add('show'));
+    state('form'); document.body.style.overflow = 'hidden';
+    setTimeout(() => { const f = document.getElementById('q1'); if (f && !JOTFORM_ID) f.focus({ preventScroll: true }); }, 380);
+  }
+  function closeForm(next) {
+    modal.classList.remove('show'); document.body.style.overflow = '';
+    setTimeout(() => { modal.hidden = true; }, 350);
+    if (next !== 'processing') state('missed');   // closed without finishing: the machine asks them back
+    if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
+  }
+  function align() {   // bring the whole section into view under the nav before anything pops up
+    const sec = document.getElementById('sec3'), cs = getComputedStyle(document.documentElement);
+    const off = (parseFloat(cs.getPropertyValue('--tgv-top')) || 0) + (parseFloat(cs.getPropertyValue('--tgv-nav')) || 0);
+    const d = sec.getBoundingClientRect().top - off; if (Math.abs(d) > 4) window.scrollTo({ top: window.scrollY + d, behavior: 'smooth' });
+  }
+  async function deliver() {
+    if (started) return; started = true;
+    state('delivering'); walk.classList.add('going'); tom.classList.add('in');
+    await wait(2400); walk.classList.remove('going');
+    carry.style.visibility = 'hidden'; fly.classList.add('go');
+    await wait(650); m.classList.add('gulp');
+    await wait(350); m.classList.add('shake');
+    await wait(600); m.classList.remove('shake', 'gulp');
+    state('ready'); await wait(650);
+    if (inView) openForm(); else pending = true;   // the form pops up by itself, only while the visitor is here
+  }
+  let inView = false, pending = false;
+  new IntersectionObserver((es) => { inView = es[0].isIntersecting; if (inView) { if (pending) { pending = false; openForm(); } deliver(); } }, { threshold: .55 }).observe(m);
+  document.getElementById('m3screen').addEventListener('click', () => { if (/st-(ready|missed)/.test(m.className)) openForm(); });
+  document.getElementById('aclose').addEventListener('click', () => closeForm());
+  modal.addEventListener('click', (e) => { if (e.target === modal) closeForm(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !modal.hidden) closeForm(); });
+
+  if (JOTFORM_ID) {
+    modal.querySelector('.tg-sheet').classList.add('has-jot');
+    document.getElementById('jot').innerHTML = '<iframe title="AI Employee Opportunity Assessment" src="https://form.jotform.com/' + JOTFORM_ID + '"></iframe>';
+    // Start processing only when Jotform reports a completed submission (confirm the event name against your embed).
+    window.addEventListener('message', (e) => {
+      if (!/jotform/.test(e.origin || '')) return;
+      const d = typeof e.data === 'string' ? e.data : JSON.stringify(e.data || '');
+      if (/submission-completed|formSubmitted/i.test(d)) run('');
+    });
+  }
+  const q4 = document.getElementById('q4');
+  q4.addEventListener('input', () => { const v = +q4.value; document.getElementById('q4v').textContent = v >= 60 ? (v / 60).toFixed(v % 60 ? 1 : 0) + (v === 60 ? ' hour' : ' hours') : v + ' minutes'; });
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const q1 = document.getElementById('q1'), q8 = document.getElementById('q8');
+    if (!q1.value.trim() || !q8.checkValidity()) { form.classList.add('invalid'); (q1.value.trim() ? q8 : q1).focus(); return; }   // machine stays ready
+    form.classList.remove('invalid');
+    run(q8.value.trim());
+  });
+  async function run(email) {
+    document.getElementById('bpmail').textContent = email || 'your inbox';
+    closeForm('processing'); state('processing');
+    await wait(4400); m.classList.add('opening');
+    await wait(1100); m.classList.remove('opening'); state('done');
+  }
+  document.getElementById('again').addEventListener('click', () => { form.reset(); q4.dispatchEvent(new Event('input')); state('ready'); openForm(); });
+})();
+
+(() => {   // put the machine's floor exactly on the floor line of the background (92.5% of the section)
+  const s = document.getElementById('sec3'), st = document.getElementById('m3');
+  function fit() { if (innerWidth <= 760) return; const H = s.offsetHeight, h = st.offsetHeight; s.style.setProperty('--s3pb', Math.max(0, H * .075 - h * .026) + 'px'); }
+  addEventListener('resize', fit); fit(); setTimeout(fit, 400);
+})();
+
+(() => {
+  const rowsEl = document.getElementById('t4rows'), num = document.getElementById('t4num'), chips = document.getElementById('t4chips');
+  const blocks = [...document.querySelectorAll('#wk .wk-b')], toms = [...document.querySelectorAll('#t4tom > div')];
+  const order = blocks.map((b, i) => i).sort((a, b) => ((a * 7) % 11) - ((b * 7) % 11));   // blocks free up across the week
+  let total = 0, shown = 0;
+  function tick() {
+    const step = () => { shown = Math.min(total, shown + Math.max(.05, (total - shown) * .15)); num.textContent = (Math.round(shown * 4) / 4).toString(); if (shown < total) requestAnimationFrame(step); };
+    requestAnimationFrame(step);
+  }
+  function handOff(name, h) {
+    const before = Math.round(total); total += h; const after = Math.min(40, Math.round(total));
+    for (let k = before; k < after; k++) { const b = blocks[order[k]]; setTimeout(() => { b.classList.add('flip', 'free'); }, (k - before) * 90); }
+    const c = document.createElement('span'); c.textContent = name; chips.appendChild(c);
+    tick();
+    const mood = total >= 6 ? 2 : total >= 2.5 ? 1 : 0;
+    toms.forEach((t, i) => t.classList.toggle('on', i === mood));
+  }
+  rowsEl.addEventListener('click', (e) => {
+    const btn = e.target.closest('.t4go'); if (!btn) return;
+    const row = btn.closest('.t4row'); if (row.classList.contains('out')) return;
+    row.classList.add('out'); handOff(row.querySelector('.t4n').textContent, +row.dataset.h);
+  });
+  document.getElementById('t4add').addEventListener('submit', (e) => {
+    e.preventDefault(); const inp = document.getElementById('t4in'); const v = inp.value.trim();
+    if (!v) { inp.focus(); return; }
+    handOff(v, 2); inp.value = '';
+  });
+  document.getElementById('t4reset').addEventListener('click', () => {
+    total = 0; shown = 0; num.textContent = '0'; chips.innerHTML = '';
+    blocks.forEach((b) => b.classList.remove('free', 'flip'));
+    rowsEl.querySelectorAll('.t4row').forEach((r) => r.classList.remove('out'));
+    toms.forEach((t, i) => t.classList.toggle('on', i === 0));
+  });
+})();
+
+(() => {
+  const sec = document.getElementById('sec5'), vp = document.getElementById('s5vp'), scene = document.getElementById('s5scene'), strip = document.getElementById('s5strip');
+  const floors = [...strip.querySelectorAll('.s5floor')], arts = [...strip.querySelectorAll('.s5art')], slab = strip.querySelector('.tl-slab');
+  const a = strip.querySelector('.tl-a'), b = strip.querySelector('.tl-b');
+  const tomA = document.getElementById('s5tomA'), tomB = document.getElementById('s5tomB'), dim = document.getElementById('s5dim');
+  const gifts = [...sec.querySelectorAll('.g5')];
+  const LIFT = 650, SPOT = { g1: 745, g2: 1045 };
+  let sc = 1, focus = 560, down = false, started = false, arrived = false, busy = false, tomX = LIFT, openCard = null, lastGift = null;
+  const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+  const mob = () => scene.clientWidth < 760;
+  const head = sec.querySelector('.s5head');
+  function layout(anim) {
+    const W = scene.clientWidth, hh = head.offsetTop + head.offsetHeight + 12;
+    vp.style.height = ''; vp.style.minHeight = ''; { const avail = mob() ? Infinity : vp.clientHeight - hh; sc = Math.min(avail / 600, W / 1600);   // whole lobby always in frame
+      if (600 * sc + 40 < avail || mob()) { vp.style.minHeight = '0'; vp.style.height = Math.round(hh + 600 * sc + 40) + 'px'; } }
+    
+    const H = scene.clientHeight;
+    const aw = 1600 * sc, ah = 600 * sc;
+    const x = aw > W ? Math.min(0, Math.max(W - aw, W / 2 - focus * sc)) : (W - aw) / 2;
+    floors.forEach((f, i) => { f.style.height = H + 'px'; f.style.setProperty('--fb', ((i ? 86 : 94) * sc) + 'px'); });
+    arts.forEach((el) => { el.style.transition = anim ? 'left 1s cubic-bezier(.6,0,.3,1)' : 'none'; el.style.width = aw + 'px'; el.style.height = ah + 'px'; el.style.left = x + 'px'; });
+    if (!anim) strip.style.transition = 'none';
+    strip.style.transform = 'translateY(' + (down ? -(H + slab.offsetHeight) : 0) + 'px)';
+    if (!anim) { void strip.offsetWidth; strip.style.transition = ''; }
+  }
+  addEventListener('resize', () => layout(false));
+  a.classList.add('open'); layout(false);
+
+  async function ride() {                       // about 3 seconds from the office floor to the lounge
+    if (started) return; started = true;
+    tomA.classList.add('walking'); tomA.style.left = (LIFT / 16) + '%';
+    await wait(1000); tomA.classList.remove('walking'); tomA.classList.add('inside'); await wait(250); a.classList.remove('open');
+    await wait(400);
+    sec.classList.add('moving'); sec.querySelectorAll('.tl-n').forEach((n) => { n.textContent = '3'; });
+    down = true; focus = mob() ? 935 : 900; layout(true);
+    await wait(1000); sec.classList.remove('moving');
+    tomB.classList.add('inside', 'idle'); tomB.style.opacity = '1'; b.classList.add('open');
+    await wait(450); tomB.classList.add('out'); tomB.classList.remove('inside');   // steps out in front of the lift
+    await wait(350); sec.classList.add('arrived'); arrived = true;
+    await wait(700); b.classList.remove('open');
+  }
+  new IntersectionObserver((es) => { if (es[0].isIntersecting) ride(); }, { threshold: .5 }).observe(vp);
+
+  function walkTo(x) {
+    return new Promise((res) => {
+      const d = Math.abs(x - tomX); if (d < 2) { res(); return; }
+      const t = d / 430;
+      tomB.classList.toggle('flip', x < tomX); tomB.classList.remove('yay'); tomB.classList.add('walking');
+      tomB.style.transition = 'left ' + t + 's linear'; tomB.style.left = (x / 16) + '%'; tomX = x;
+      setTimeout(() => { tomB.classList.remove('walking', 'flip'); res(); }, t * 1000);
+    });
+  }
+  async function pick(g) {
+    if (!arrived || busy) return; busy = true; lastGift = g;
+    sec.classList.add('picking'); gifts.forEach((o) => o.classList.toggle('picked', o === g));
+    await walkTo(SPOT[g.id]);                   // Tom goes and stands beside the chosen gift
+    g.classList.add('opened'); tomB.classList.add('yay');
+    await wait(1000);
+    show(document.getElementById(g.id + '-card')); busy = false;
+  }
+  function show(c) {
+    openCard = c; vp.classList.add('has-open'); dim.classList.add('show'); c.hidden = false;
+    requestAnimationFrame(() => requestAnimationFrame(() => c.classList.add('show')));
+    setTimeout(() => c.querySelector('.c5-cta').focus({ preventScroll: true }), 420);
+  }
+  function close() {
+    if (!openCard) return; const c = openCard; openCard = null;
+    c.classList.remove('show'); dim.classList.remove('show'); vp.classList.remove('has-open');
+    setTimeout(() => { c.hidden = true; }, 400);
+    gifts.forEach((o) => o.classList.remove('opened', 'picked')); sec.classList.remove('picking'); tomB.classList.remove('yay');
+    if (lastGift) lastGift.focus({ preventScroll: true });
+  }
+  gifts.forEach((g) => g.addEventListener('click', () => pick(g)));
+  sec.querySelectorAll('.c5x').forEach((x) => x.addEventListener('click', close));
+  dim.addEventListener('click', close);
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && openCard) close(); });
+})();
+
+(() => {
+  const ASSET = {"sunset": TG_ASSET("sunset.webp"), "doodle": TG_ASSET("doodle.png"), "leaffall": TG_ASSET("leaffall.webp"), "branch": TG_ASSET("branch.webp"), "pumpkins3": TG_ASSET("pumpkins3.webp"), "leafcorner": TG_ASSET("leafcorner.webp"), "leaves2": TG_ASSET("leaves2.webp"), "pie": TG_ASSET("pie.svg"), "tomwave": TG_ASSET("tomwave.webp"), "peek": TG_ASSET("peek.webp"), "grassturkey": TG_ASSET("grassturkey.webp")}, PROMPTS = ["Thank you for making the hard weeks feel lighter.", "You showed up when it mattered most. I noticed, and I'm grateful.", "This year was better because you were in it.", "Thanks for every quick call that quietly saved the day.", "Grateful for your patience, your humour and your spreadsheets.", "You made me better at what I do. Thank you."];
+  const $ = (id) => document.getElementById(id);
+  const cv = $('csCard'), ctx = cv.getContext('2d'), W = 1500, H = 1000;
+  const to = $('csTo'), msg = $('csMsg'), from = $('csFrom');
+  const img = {}; let ready = 0; const keys = Object.keys(ASSET);
+  keys.forEach((k) => { const i = new Image(); let retry = 0; i.crossOrigin = 'anonymous'; i.onload = () => { if (++ready === keys.length) draw(); }; i.onerror = () => { if (retry++) return; i.removeAttribute('crossorigin'); i.src = ASSET[k] + (ASSET[k].indexOf('?') < 0 ? '?nc=1' : '&nc=1'); }; i.src = ASSET[k]; img[k] = i; });
+  const LEAF = new Path2D('M0 -10 C3 -6 7 -5 9 -2 C5 -1 4 2 4 6 C2 4 0 4 0 7 C0 4 -2 4 -4 6 C-4 2 -5 -1 -9 -2 C-7 -5 -3 -6 0 -10Z');
+  // where each sticker sits when it is first added (a composition that works with every text position)
+  const SLOT = { leaffall: [-20, -20, 560], branch: [W - 640, -30, 660], pumpkins3: [W - 600, H - 330, 560], leafcorner: [W - 470, H - 420, 450],
+                 leaves2: [-50, H - 310, 330], pie: [70, H - 250, 300], tomwave: [W - 300, H - 400, 250], peek: [W - 600, H - 470, 540], grassturkey: [W - 900, H - 300, 920] };
+  const BG = {
+    cream:  { ink: '#3A1A10', acc: '#B00000', paint(c) { c.fillStyle = lin(c, 0, 0, W, H, [[0, '#FFF8F0'], [1, '#FDE6D6']]); c.fillRect(0, 0, W, H); } },
+    peach:  { ink: '#3A1A10', acc: '#B00000', paint(c) { const g = c.createRadialGradient(W * .35, H * .4, 40, W * .5, H * .5, W * .8); g.addColorStop(0, '#FFF6EF'); g.addColorStop(1, '#FBCFB9'); c.fillStyle = g; c.fillRect(0, 0, W, H); } },
+    ember:  { ink: '#FFFFFF', acc: '#FFE1C4', paint(c) { c.fillStyle = lin(c, 0, 0, W, H, [[0, '#FD6523'], [1, '#E43124']]); c.fillRect(0, 0, W, H); } },
+    sunset: { ink: '#3A1A10', acc: '#B00000', paint(c) { cover(c, img.sunset, 0, 0, W, H); } },
+    night:  { ink: '#FFFFFF', acc: '#FDB13E', paint(c) { c.fillStyle = lin(c, 0, 0, W, H, [[0, '#141A42'], [1, '#3A3F78']]); c.fillRect(0, 0, W, H);
+                                                        for (let i = 0; i < 60; i++) { c.fillStyle = 'rgba(255,240,220,' + (.3 + (i % 5) / 8) + ')'; c.beginPath(); c.arc((i * 271) % W, (i * 163) % (H * .8), 1.5 + (i % 3), 0, 7); c.fill(); } } },
+    doodle: { ink: '#3A1A10', acc: '#B00000', paint(c) { c.fillStyle = '#FFF7F0'; c.fillRect(0, 0, W, H); const p = c.createPattern(img.doodle, 'repeat'); c.save(); c.globalAlpha = .6; c.scale(1.25, 1.25); c.fillStyle = p; c.fillRect(0, 0, W, H); c.restore(); } },
+  };
+  const S = { bg: 'cream', pattern: 'none', font: 'print', layout: 'center', stickers: [], sel: -1 };
+  function lin(c, x0, y0, x1, y1, st) { const g = c.createLinearGradient(x0, y0, x1, y1); st.forEach(([o, k]) => g.addColorStop(o, k)); return g; }
+  function cover(c, im, x, y, w, h) { const r = Math.max(w / im.width, h / im.height); c.drawImage(im, x + (w - im.width * r) / 2, y + (h - im.height * r) / 2, im.width * r, im.height * r); }
+  function rr(c, x, y, w, h, r) { c.beginPath(); c.moveTo(x + r, y); c.arcTo(x + w, y, x + w, y + h, r); c.arcTo(x + w, y + h, x, y + h, r); c.arcTo(x, y + h, x, y, r); c.arcTo(x, y, x + w, y, r); c.closePath(); }
+  function leaf(c, x, y, s, r, col) { c.save(); c.translate(x, y); c.rotate(r); c.scale(s, s); c.fillStyle = col; c.fill(LEAF); c.restore(); }
+  function quilt(c, s) {
+    const pal = ['#B00000', '#FD6523', '#FFF4E8', '#FBCFB9', '#7A1F12', '#FDB13E'];
+    c.save(); const pth = new Path2D(); pth.rect(0, 0, W, H); const ix = s * .9, r0 = 28; pth.moveTo(ix + r0, ix); pth.arcTo(W - ix, ix, W - ix, H - ix, r0); pth.arcTo(W - ix, H - ix, ix, H - ix, r0); pth.arcTo(ix, H - ix, ix, ix, r0); pth.arcTo(ix, ix, W - ix, ix, r0); pth.closePath(); c.clip(pth, 'evenodd');
+    let n = 0;
+    for (let y = 0; y < H; y += s) for (let x = 0; x < W; x += s) {
+      const k = (Math.floor(x / s) * 7 + Math.floor(y / s) * 3) % 6, a = pal[n % 6], b = pal[(n + 2) % 6]; n++;
+      c.fillStyle = a; c.fillRect(x, y, s, s); c.fillStyle = b; c.beginPath();
+      if (k === 0) c.arc(x + s / 2, y + s / 2, s * .4, 0, 7);
+      else if (k === 1) { c.moveTo(x, y + s); c.lineTo(x + s, y); c.lineTo(x + s, y + s); }
+      else if (k === 2) { c.moveTo(x, y); c.arc(x, y, s, 0, Math.PI / 2); }
+      else if (k === 3) { for (let i = 0; i < 2; i++) for (let j = 0; j < 2; j++) { c.moveTo(x + s * (.25 + .5 * i) + s * .2, y + s * (.25 + .5 * j)); c.arc(x + s * (.25 + .5 * i), y + s * (.25 + .5 * j), s * .2, 0, 7); } }
+      else if (k === 4) { c.moveTo(x + s / 2, y + s * .1); c.lineTo(x + s * .9, y + s / 2); c.lineTo(x + s / 2, y + s * .9); c.lineTo(x + s * .1, y + s / 2); }
+      else { c.ellipse(x + s / 2, y + s * .3, s * .2, s * .28, 0, 0, 7); c.moveTo(x + s / 2 + s * .2, y + s * .72); c.ellipse(x + s / 2, y + s * .72, s * .2, s * .28, 0, 0, 7); }
+      c.fill();
+    }
+    c.restore();
+  }
+  function sticker(c, st) { const im = img[st.k]; const h = st.w * im.height / im.width; c.drawImage(im, st.x, st.y, st.w, h); return h; }
+  function wrap(c, t, mw) { const out = []; let line = ''; t.split(/\s+/).forEach((w) => { const s = line ? line + ' ' + w : w; if (c.measureText(s).width > mw && line) { out.push(line); line = w; } else line = s; }); if (line) out.push(line); return out; }
+  const F = (hand, size, wt) => hand ? `${wt > 500 ? 700 : 600} ${size * 1.32}px 'Caveat', cursive` : `${wt} ${size}px ${wt > 500 ? "'Funnel Display'" : "'Geologica'"}, Arial, sans-serif`;
+  function words(c, s) {
+    const bg = BG[s.bg], hand = s.font === 'hand';
+    const pad = s.pattern === 'quilt' ? 190 : 150;
+    const box = s.layout === 'left' ? { x: pad, w: 760, al: 'left' } : s.layout === 'right' ? { x: W - pad - 760, w: 760, al: 'right' } : { x: 300, w: 900, al: 'center' };
+    let ink = bg.ink, acc = bg.acc;
+    if (s.pattern === 'quilt') { ink = '#3A1A10'; acc = '#B00000'; }
+    if (s.pattern === 'panel') {
+      ink = '#3A1A10'; acc = '#B00000';
+    }
+    const ax = box.al === 'center' ? box.x + box.w / 2 : box.al === 'right' ? box.x + box.w : box.x;
+    const pair = (pre, name, ph, size, y) => {
+      c.font = F(hand, size, 500); const w1 = c.measureText(pre).width; c.font = F(hand, size, 700); const n = name || ph; const w2 = c.measureText(n).width;
+      const x0 = box.al === 'center' ? ax - (w1 + w2) / 2 : box.al === 'right' ? ax - w1 - w2 : ax;
+      c.textAlign = 'left'; c.font = F(hand, size, 500); c.fillStyle = ink; c.fillText(pre, x0, y);
+      c.font = F(hand, size, 700); c.fillStyle = acc; c.globalAlpha = name ? 1 : .35; c.fillText(n, x0 + w1, y); c.globalAlpha = 1;
+    };
+    const M = s.msg || 'Write a few words of thanks';
+    let size = 46, lines; do { c.font = F(hand, size, 400); lines = wrap(c, M, box.w); size -= 2; } while (lines.length * size * 1.45 > 380 && size > 26);
+    const block = 70 + 40 + lines.length * size * 1.45 + 60;
+    let y = Math.max(220, (H - block) / 2 + 50);
+    pair('To ', s.to, 'Their name', 60, y);
+    y += 44 + size * 1.2; c.textAlign = box.al; c.fillStyle = ink; c.font = F(hand, size, 400); c.globalAlpha = s.msg ? 1 : .35;
+    lines.forEach((l) => { c.fillText(l, ax, y); y += size * 1.45; }); c.globalAlpha = 1;
+    pair('From ', s.from, 'Your name', 48, y + 46);
+  }
+  function render(c, s, k = 1, ui = false) {
+    c.save(); c.setTransform(k, 0, 0, k, 0, 0); c.clearRect(0, 0, W, H);
+    BG[s.bg].paint(c);
+    if (s.pattern === 'confetti') { const cols = s.bg === 'ember' || s.bg === 'night' ? ['rgba(255,214,170,.28)', 'rgba(253,177,62,.35)'] : ['rgba(226,88,47,.22)', 'rgba(253,177,62,.3)', 'rgba(176,0,0,.16)'];
+      for (let i = 0; i < 46; i++) leaf(c, (i * 337 + 60) % W, (i * 211 + 40) % H, 1.6 + (i % 4) * .7, i * .9, cols[i % cols.length]); }
+    if (s.pattern === 'quilt') { c.fillStyle = '#FFF8EE'; c.fillRect(0, 0, W, H); quilt(c, 110); }
+    if (s.pattern === 'panel') { const px = s.layout === 'center' ? 230 : s.layout === 'left' ? 90 : W - 150 - 760 - 60, pw = s.layout === 'center' ? W - 460 : 880;
+      c.save(); c.shadowColor = 'rgba(70,14,6,.22)'; c.shadowBlur = 46; c.shadowOffsetY = 16; c.fillStyle = 'rgba(255,253,250,.97)'; rr(c, px, 170, pw, H - 340, 34); c.fill(); c.restore(); }
+    s.stickers.forEach((st) => sticker(c, st));
+    words(c, s);
+    if (ui && s.sel >= 0 && s.stickers[s.sel]) {
+      const st = s.stickers[s.sel], h = st.w * img[st.k].height / img[st.k].width;
+      c.save(); c.setLineDash([14, 10]); c.lineWidth = 4; c.strokeStyle = '#B00000'; c.strokeRect(st.x, st.y, st.w, h); c.setLineDash([]);
+      c.fillStyle = '#fff'; c.strokeStyle = '#B00000';
+      c.beginPath(); c.arc(st.x + st.w, st.y + h, 22, 0, 7); c.fill(); c.stroke();
+      c.beginPath(); c.moveTo(st.x + st.w - 8, st.y + h - 8); c.lineTo(st.x + st.w + 8, st.y + h + 8); c.moveTo(st.x + st.w + 8, st.y + h - 2); c.lineTo(st.x + st.w + 8, st.y + h + 8); c.lineTo(st.x + st.w - 2, st.y + h + 8); c.stroke();
+      c.fillStyle = '#B00000'; c.beginPath(); c.arc(st.x + st.w, st.y, 22, 0, 7); c.fill();
+      c.strokeStyle = '#fff'; c.lineWidth = 4; c.beginPath(); c.moveTo(st.x + st.w - 8, st.y - 8); c.lineTo(st.x + st.w + 8, st.y + 8); c.moveTo(st.x + st.w + 8, st.y - 8); c.lineTo(st.x + st.w - 8, st.y + 8); c.stroke();
+      c.restore();
+    }
+    c.restore();
+  }
+  const state = () => ({ bg: S.bg, pattern: S.pattern, font: S.font, layout: S.layout, stickers: S.stickers.map((x) => Object.assign({}, x)), sel: S.sel, to: to.value.trim(), msg: msg.value.trim(), from: from.value.trim() });
+  function draw() { if (ready === keys.length) render(ctx, state(), 1, true); }
+  [to, msg, from].forEach((el) => el.addEventListener('input', draw));
+  const bump = () => { const w = cv.parentNode; w.classList.add('bump'); setTimeout(() => w.classList.remove('bump'), 350); };
+
+  // tabs and choices
+  document.querySelectorAll('.cs-tabs button').forEach((b) => b.addEventListener('click', () => {
+    document.querySelectorAll('.cs-tabs button').forEach((o) => { o.classList.toggle('on', o === b); o.setAttribute('aria-selected', o === b); });
+    document.querySelectorAll('.cs-pane').forEach((p) => { const on = p.dataset.pane === b.dataset.tab; p.hidden = !on; p.classList.toggle('on', on); });
+  }));
+  function setSeg(k, v) { S[k] = v; document.querySelectorAll(`.cs-seg[data-k=${k}] button`).forEach((o) => { const on = o.dataset.v === v; o.classList.toggle('on', on); o.setAttribute('aria-checked', on); }); }
+  document.querySelectorAll('.cs-seg[data-k] button').forEach((b) => b.addEventListener('click', () => { setSeg(b.parentNode.dataset.k, b.dataset.v); draw(); bump(); }));
+  function setBg(v) { S.bg = v; document.querySelectorAll('.cs-sw .sw').forEach((o) => o.classList.toggle('on', o.dataset.bg === v)); }
+  document.querySelectorAll('.cs-sw .sw').forEach((b) => b.addEventListener('click', () => { setBg(b.dataset.bg); draw(); bump(); }));
+  document.querySelectorAll('.chip').forEach((b) => b.addEventListener('click', () => { msg.value = b.textContent; draw(); bump(); }));
+  function add(k) {
+    const [x, y, w] = SLOT[k]; const n = S.stickers.filter((s) => s.k === k).length;
+    S.stickers.push({ k, x: x + n * 50, y: y + n * 40, w }); S.sel = S.stickers.length - 1; draw(); bump();
+  }
+  document.querySelectorAll('.stk').forEach((b) => b.addEventListener('click', () => add(b.dataset.s)));
+  $('csClear').addEventListener('click', () => { S.stickers = []; S.sel = -1; draw(); });
+
+  // drag to move, corner to resize, the red dot removes
+  let drag = null;
+  const pt = (e) => { const r = cv.getBoundingClientRect(); return { x: (e.clientX - r.left) * W / r.width, y: (e.clientY - r.top) * H / r.height }; };
+  const hgt = (st) => st.w * img[st.k].height / img[st.k].width;
+  cv.addEventListener('pointerdown', (e) => {
+    const p = pt(e), sel = S.stickers[S.sel];
+    if (sel) {
+      const h = hgt(sel);
+      if (Math.hypot(p.x - (sel.x + sel.w), p.y - sel.y) < 34) { S.stickers.splice(S.sel, 1); S.sel = -1; draw(); return; }
+      if (Math.hypot(p.x - (sel.x + sel.w), p.y - (sel.y + h)) < 38) { drag = { mode: 'size', st: sel, x0: p.x, w0: sel.w }; cv.setPointerCapture(e.pointerId); return; }
+    }
+    for (let i = S.stickers.length - 1; i >= 0; i--) {
+      const st = S.stickers[i], h = hgt(st);
+      if (p.x >= st.x && p.x <= st.x + st.w && p.y >= st.y && p.y <= st.y + h) {
+        S.stickers.push(S.stickers.splice(i, 1)[0]); S.sel = S.stickers.length - 1;
+        drag = { mode: 'move', st: S.stickers[S.sel], dx: p.x - st.x, dy: p.y - st.y }; cv.setPointerCapture(e.pointerId); cv.style.cursor = 'grabbing'; draw(); return;
+      }
+    }
+    S.sel = -1; draw();
+  });
+  cv.addEventListener('pointermove', (e) => {
+    const p = pt(e);
+    if (!drag) {
+      const over = S.stickers.some((st) => p.x >= st.x && p.x <= st.x + st.w && p.y >= st.y && p.y <= st.y + hgt(st));
+      cv.style.cursor = over ? 'grab' : 'default'; return;
+    }
+    if (drag.mode === 'move') { drag.st.x = p.x - drag.dx; drag.st.y = p.y - drag.dy; }
+    else drag.st.w = Math.max(80, Math.min(1400, drag.w0 + (p.x - drag.x0)));
+    draw();
+  });
+  const end = () => { drag = null; cv.style.cursor = 'default'; };
+  cv.addEventListener('pointerup', end); cv.addEventListener('pointercancel', end);
+  document.addEventListener('keydown', (e) => { if ((e.key === 'Delete' || e.key === 'Backspace') && S.sel >= 0 && document.activeElement === document.body) { S.stickers.splice(S.sel, 1); S.sel = -1; draw(); } });
+
+  // surprise me: a considered combination, not a random pile
+  const COMBOS = [['leaffall', 'pumpkins3'], ['branch', 'leaves2'], ['leafcorner', 'pie'], ['tomwave', 'leaffall'], ['peek'], ['grassturkey', 'branch'], ['pumpkins3', 'leaves2'], ['pie', 'branch']];
+  $('csShuffle').addEventListener('click', () => {
+    const bgs = Object.keys(BG), pats = ['none', 'quilt', 'confetti', 'panel'];
+    setBg(bgs[Math.floor(Math.random() * bgs.length)]);
+    setSeg('pattern', pats[Math.floor(Math.random() * pats.length)]);
+    setSeg('font', Math.random() < .5 ? 'hand' : 'print');
+    const combo = COMBOS[Math.floor(Math.random() * COMBOS.length)];
+    setSeg('layout', combo.includes('leaffall') || combo.includes('leaves2') ? (Math.random() < .5 ? 'center' : 'right') : (Math.random() < .5 ? 'left' : 'center'));
+    if (S.pattern === 'quilt') combo.splice(1);
+    S.stickers = combo.map((k) => ({ k, x: SLOT[k][0], y: SLOT[k][1], w: SLOT[k][2] })); S.sel = -1;
+    if (!msg.value.trim() || PROMPTS.includes(msg.value.trim())) msg.value = PROMPTS[Math.floor(Math.random() * PROMPTS.length)];
+    draw(); bump();
+  });
+
+  // starting point: cream card, a few leaves and pumpkins, words in the middle
+  S.stickers = [{ k: 'leaffall', x: -20, y: -20, w: 520 }, { k: 'pumpkins3', x: W - 560, y: H - 300, w: 520 }];
+  if (document.fonts) document.fonts.ready.then(draw);
+
+  // download and keep several
+  const saved = [];
+  function need() { if (!to.value.trim()) { to.focus(); bump(); return false; } if (!msg.value.trim()) { msg.focus(); bump(); return false; } return true; }
+  function blobOf(s) { const c = document.createElement('canvas'); c.width = W; c.height = H; render(c.getContext('2d'), s); return new Promise((r) => c.toBlob(r, 'image/png')); }
+  const fname = (s) => 'thank-you-' + (s.to || 'card').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') + '.png';
+  async function download(s) {
+    const blob = await blobOf(s), file = new File([blob], fname(s), { type: 'image/png' });
+    if (navigator.canShare && navigator.canShare({ files: [file] }) && matchMedia('(pointer:coarse)').matches) { try { await navigator.share({ files: [file] }); return; } catch (e) {} }
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = file.name; document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1500);
+  }
+  function tray() {
+    const box = $('csThumbs'); box.innerHTML = ''; $('csTray').hidden = !saved.length; $('csAll').hidden = saved.length < 2;
+    saved.forEach((s, i) => {
+      const d = document.createElement('div'); d.className = 'cs-th';
+      const c = document.createElement('canvas'); c.width = 300; c.height = 200; render(c.getContext('2d'), s, .2);
+      d.innerHTML = '<img alt="Card to ' + s.to.replace(/[<>"]/g, '') + '" src="' + c.toDataURL('image/png') + '"><button type="button" class="x" aria-label="Remove"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>';
+      d.querySelector('img').addEventListener('click', () => {
+        to.value = s.to; msg.value = s.msg; from.value = s.from; setBg(s.bg); setSeg('pattern', s.pattern); setSeg('font', s.font); setSeg('layout', s.layout);
+        S.stickers = s.stickers; S.sel = -1; saved.splice(i, 1); tray(); draw(); bump();
+      });
+      d.querySelector('.x').addEventListener('click', (e) => { e.stopPropagation(); saved.splice(i, 1); tray(); });
+      box.appendChild(d);
+    });
+  }
+  $('csGo').addEventListener('click', () => { if (need()) download(Object.assign(state(), { sel: -1 })); });
+  $('csMore').addEventListener('click', () => { if (!need()) return; saved.push(Object.assign(state(), { sel: -1 })); tray(); to.value = ''; msg.value = ''; S.sel = -1; to.focus(); draw(); });
+  $('csAll').addEventListener('click', async () => { const all = saved.slice(); if (to.value.trim() && msg.value.trim()) all.push(Object.assign(state(), { sel: -1 })); for (const s of all) { await download(s); await new Promise((r) => setTimeout(r, 400)); } });
+})();
+
+(() => {
+  /* Where the thanks are stored. Fill ONE of these to make the wall live and shared:
+     1) Supabase: SUPABASE_URL + SUPABASE_KEY (anon key) and a table "thanks" (see README).
+     2) Your own endpoint: API_URL that answers GET with [{name, text}] and accepts POST {name, text}.
+     With neither filled in, the wall saves in this browser only (for previewing). */
+  const SUPABASE_URL = '', SUPABASE_KEY = '', API_URL = '';
+  const MAX = 12, POLL = 20000;
+  const wall = document.getElementById('w7wall'), form = document.getElementById('w7form'), err = document.getElementById('w7err');
+  const nameIn = document.getElementById('w7name'), textIn = document.getElementById('w7text'), go = document.getElementById('w7go');
+  const BLOCK = /\b(fuck|shit|bitch|cunt|dick|asshole|bastard|slut|whore|nigg|fag)\w*/i;
+  const esc = (s) => s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const HEART = '<svg viewBox="0 0 48 48" aria-hidden="true"><defs><linearGradient id="tgHeart" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F06A2A"/><stop offset=".55" stop-color="#D8436A"/><stop offset="1" stop-color="#5D5FD8"/></linearGradient></defs><circle cx="24" cy="24" r="24" fill="url(#tgHeart)"/><path d="M24 35s-10-6.2-10-14a5.6 5.6 0 0 1 10-3.4A5.6 5.6 0 0 1 34 21c0 7.8-10 14-10 14z" fill="#FBE3D0"/><path d="M18.5 19.5a3 3 0 0 1 3-2.4" stroke="#fff" stroke-width="2" stroke-linecap="round" fill="none"/></svg>';
+  const sb = (path, opt = {}) => fetch(SUPABASE_URL + '/rest/v1/' + path, Object.assign({ headers: Object.assign({ apikey: SUPABASE_KEY, Authorization: 'Bearer ' + SUPABASE_KEY }, opt.headers || {}) }, opt.init || {}));
+  const api = SUPABASE_URL ? {
+    list: () => sb('thanks?select=name,text,created_at&order=created_at.desc&limit=' + MAX).then((r) => { if (!r.ok) throw r; return r.json(); }),
+    add: (e) => sb('thanks', { headers: { 'Content-Type': 'application/json', Prefer: 'return=minimal' }, init: { method: 'POST', body: JSON.stringify(e) } }).then((r) => { if (!r.ok) throw r; })
+  } : API_URL ? {
+    list: () => fetch(API_URL).then((r) => { if (!r.ok) throw r; return r.json(); }),
+    add: (e) => fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(e) }).then((r) => { if (!r.ok) throw r; })
+  } : {
+    list: async () => { try { return JSON.parse(localStorage.getItem('tg-thanks') || '[]'); } catch (e) { return []; } },
+    add: async (e) => { let a = []; try { a = JSON.parse(localStorage.getItem('tg-thanks') || '[]'); } catch (x) {} a.unshift(e); try { localStorage.setItem('tg-thanks', JSON.stringify(a.slice(0, 60))); } catch (x) {} }
+  };
+  const live = !!(SUPABASE_URL || API_URL);
+  const SEED = [{name:'Maya',text:'A team that covers for each other without being asked.'},{name:'Daniel',text:'Fewer status meetings and more time to actually build.'},{name:'Priya',text:'The colleague who explained the new process twice, kindly.'},{name:'Leo',text:'Finally clearing the invoice backlog before the holidays.'},{name:'Ava',text:'Coffee, good playlists and a manager who listens.'},{name:'Sam',text:'Small wins every week that added up to a big year.'}];   // sample thanks shown alongside real ones; edit or empty this list
+  let items = [];
+  const cardHTML = (e) => '<span class="hb">' + HEART + '</span><div><div class="who"><b>' + esc(e.name || 'Someone') + '</b> is thankful for:</div><p class="what">' + esc(e.text) + '</p></div>';
+  function render(fresh) {
+    wall.innerHTML = '';
+    items.concat(SEED).slice(0, MAX).forEach((e, i) => { const d = document.createElement('div'); d.className = 'w7card' + (fresh && i === 0 ? ' new' : ''); d.innerHTML = cardHTML(e); wall.appendChild(d); });
+  }
+  async function load() { try { const got = await api.list(); if (Array.isArray(got)) { items = got; render(false); } } catch (e) {} }
+  form.addEventListener('submit', async (ev) => {
+    ev.preventDefault(); err.hidden = true;
+    const e = { name: nameIn.value.trim().slice(0, 40), text: textIn.value.trim().slice(0, 140) };
+    if (e.text.length < 2) { textIn.focus(); return; }
+    if (BLOCK.test(e.name + ' ' + e.text)) { err.textContent = 'Please keep it kind. Try different words.'; err.hidden = false; return; }
+    go.disabled = true; items.unshift(e); render(true); textIn.value = '';
+    try { await api.add(e); } catch (x) { items.shift(); render(false); textIn.value = e.text; err.textContent = 'Your thanks could not be added just now. Please try again.'; err.hidden = false; }
+    go.disabled = false;
+  });
+  load();
+  if (live) setInterval(() => { if (document.visibilityState === 'visible' && !document.activeElement.closest('#w7form')) load(); }, POLL);
+})();
+
+(() => {
+  const vp = document.getElementById('s8vp'), walk = document.getElementById('t8walk'), sit = document.getElementById('t8sit');
+  const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+  let done = false;
+  async function play() {
+    if (done) return; done = true;
+    if (matchMedia('(prefers-reduced-motion:reduce)').matches) { sit.classList.add('in'); return; }
+    walk.style.opacity = 1; walk.classList.add('go'); void walk.offsetWidth; walk.style.left = 'calc((1122 - var(--vx)) / var(--vw) * 100%)';
+    await wait(2600); walk.classList.remove('go'); walk.style.transition = 'opacity .2s'; walk.style.opacity = 0; sit.classList.add('in');
+  }
+  new IntersectionObserver((es) => { if (es[0].isIntersecting) play(); }, { threshold: .45 }).observe(vp);
+})();
+
+(() => {
+  if (!('IntersectionObserver' in window)) { document.querySelectorAll('.tg-sec').forEach((s) => s.classList.add('tg-in')); return; }
+  const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('tg-in'); io.unobserve(e.target); } }), { threshold: .2 });
+  document.querySelectorAll('.tg-sec').forEach((s) => io.observe(s));
+})();
+
+(() => {   // last section: wide frame on desktop, close-up of the armchair corner on phones (nothing clipped either way)
+  const art = document.querySelector('.s8art'); if (!art) return;
+  const svgs = art.querySelectorAll('.s8back,.s8front'), mq = matchMedia('(max-width:760px)');
+  const D = [-40, 30, 1720, 570], M = [990, 190, 690, 410];
+  const set = () => { const v = mq.matches ? M : D; svgs.forEach((s) => s.setAttribute('viewBox', v.join(' ')));
+    ['--vx', '--vy', '--vw', '--vh'].forEach((k, i) => art.style.setProperty(k, v[i])); };
+  set(); (mq.addEventListener ? mq.addEventListener('change', set) : mq.addListener(set));
+})();
+(() => {   // phones: the gift labels sit under the heading as two clear buttons
+  document.querySelectorAll('.g5m [data-g]').forEach((b) => b.addEventListener('click', () => { const g = document.getElementById(b.dataset.g); if (g) g.click(); }));
+})();
+</script>
