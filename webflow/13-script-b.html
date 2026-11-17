@@ -121,13 +121,26 @@
   const LIFT = 650, SPOT = { g1: 745, g2: 1045 };
   let sc = 1, focus = 560, down = false, started = false, arrived = false, busy = false, tomX = LIFT, openCard = null, lastGift = null;
   const wait = (ms) => new Promise((r) => setTimeout(r, ms));
-  const mob = () => scene.clientWidth < 760;
+  const mob = () => scene.clientWidth <= 760;
   const head = sec.querySelector('.s5head');
   function layout(anim) {
     const W = scene.clientWidth, hh = head.offsetTop + head.offsetHeight + 12;
-    vp.style.height = ''; vp.style.minHeight = ''; { const avail = mob() ? Infinity : vp.clientHeight - hh; sc = Math.min(avail / 600, W / 1600);   // whole lobby always in frame
-      if (600 * sc + 40 < avail || mob()) { vp.style.minHeight = '0'; vp.style.height = Math.round(hh + 600 * sc + 40) + 'px'; } }
-    
+    vp.style.height = ''; vp.style.minHeight = ''; vp.style.maxHeight = '';
+    if (mob()) {
+      const mobileSceneH = Math.max(220, Math.min(270, W * .56));
+      scene.style.height = Math.round(mobileSceneH) + 'px';
+      sc = W / 1600; // fit the full room width edge-to-edge on phones
+      vp.style.minHeight = '0'; vp.style.height = Math.round(hh + mobileSceneH + 20) + 'px';
+    } else {
+      scene.style.height = '';
+      sc = W / 1600; // fill the complete viewport width; never letterbox the room artwork
+      const needed = Math.ceil(hh + 600 * sc + 40);
+      if (vp.clientHeight < needed) {
+        vp.style.minHeight = '0'; vp.style.maxHeight = 'none'; vp.style.height = needed + 'px';
+      } else {
+        vp.style.height = '';
+      }
+    }
     const H = scene.clientHeight;
     const aw = 1600 * sc, ah = 600 * sc;
     const x = aw > W ? Math.min(0, Math.max(W - aw, W / 2 - focus * sc)) : (W - aw) / 2;
@@ -153,7 +166,7 @@
     await wait(350); sec.classList.add('arrived'); arrived = true;
     await wait(700); b.classList.remove('open');
   }
-  new IntersectionObserver((es) => { if (es[0].isIntersecting) ride(); }, { threshold: .5 }).observe(vp);
+  new IntersectionObserver((es) => { if (es[0].isIntersecting) ride(); }, { threshold: .18 }).observe(vp);
 
   function walkTo(x) {
     return new Promise((res) => {
@@ -164,8 +177,8 @@
       setTimeout(() => { tomB.classList.remove('walking', 'flip'); res(); }, t * 1000);
     });
   }
-  async function pick(g) {
-    if (!arrived || busy) return; busy = true; lastGift = g;
+  async function pick(g, trigger = g) {
+    if (!arrived || busy) return; busy = true; lastGift = trigger;
     sec.classList.add('picking'); gifts.forEach((o) => o.classList.toggle('picked', o === g));
     await walkTo(SPOT[g.id]);                   // Tom goes and stands beside the chosen gift
     g.classList.add('opened'); tomB.classList.add('yay');
@@ -338,28 +351,35 @@
   cv.addEventListener('pointerup', end); cv.addEventListener('pointercancel', end);
   document.addEventListener('keydown', (e) => { if ((e.key === 'Delete' || e.key === 'Backspace') && S.sel >= 0 && document.activeElement === document.body) { S.stickers.splice(S.sel, 1); S.sel = -1; draw(); } });
 
-  // surprise me: a considered combination, not a random pile
+  // Randomized per visit; the visitor can reroll without exposing design controls.
   const COMBOS = [['leaffall', 'pumpkins3'], ['branch', 'leaves2'], ['leafcorner', 'pie'], ['tomwave', 'leaffall'], ['peek'], ['grassturkey', 'branch'], ['pumpkins3', 'leaves2'], ['pie', 'branch']];
-  $('csShuffle').addEventListener('click', () => {
+  const pickOne = (items) => items[Math.floor(Math.random() * items.length)];
+  function shuffleCard(animate) {
     const bgs = Object.keys(BG), pats = ['none', 'quilt', 'confetti', 'panel'];
-    setBg(bgs[Math.floor(Math.random() * bgs.length)]);
-    setSeg('pattern', pats[Math.floor(Math.random() * pats.length)]);
+    setBg(pickOne(bgs));
+    setSeg('pattern', pickOne(pats));
     setSeg('font', Math.random() < .5 ? 'hand' : 'print');
-    const combo = COMBOS[Math.floor(Math.random() * COMBOS.length)];
-    setSeg('layout', combo.includes('leaffall') || combo.includes('leaves2') ? (Math.random() < .5 ? 'center' : 'right') : (Math.random() < .5 ? 'left' : 'center'));
+    const combo = [...pickOne(COMBOS)];
+    setSeg('layout', combo.includes('leaffall') || combo.includes('leaves2') ? pickOne(['center', 'right']) : pickOne(['left', 'center']));
     if (S.pattern === 'quilt') combo.splice(1);
     S.stickers = combo.map((k) => ({ k, x: SLOT[k][0], y: SLOT[k][1], w: SLOT[k][2] })); S.sel = -1;
-    if (!msg.value.trim() || PROMPTS.includes(msg.value.trim())) msg.value = PROMPTS[Math.floor(Math.random() * PROMPTS.length)];
-    draw(); bump();
-  });
-
-  // starting point: cream card, a few leaves and pumpkins, words in the middle
+    msg.value = pickOne(PROMPTS);
+    draw(); if (animate) bump();
+  }
+  $('csShuffle').addEventListener('click', () => shuffleCard(true));
   S.stickers = [{ k: 'leaffall', x: -20, y: -20, w: 520 }, { k: 'pumpkins3', x: W - 560, y: H - 300, w: 520 }];
+  if (matchMedia('(max-width: 760px)').matches) shuffleCard(false); // mobile gets a per-visit preset
+
   if (document.fonts) document.fonts.ready.then(draw);
 
   // download and keep several
   const saved = [];
-  function need() { if (!to.value.trim()) { to.focus(); bump(); return false; } if (!msg.value.trim()) { msg.focus(); bump(); return false; } return true; }
+  function need() {
+    if (!to.value.trim()) { to.focus(); bump(); return false; }
+    if (matchMedia('(max-width: 760px)').matches && !from.value.trim()) { from.focus(); bump(); return false; }
+    if (!msg.value.trim()) msg.value = pickOne(PROMPTS);
+    return true;
+  }
   function blobOf(s) { const c = document.createElement('canvas'); c.width = W; c.height = H; render(c.getContext('2d'), s); return new Promise((r) => c.toBlob(r, 'image/png')); }
   const fname = (s) => 'thank-you-' + (s.to || 'card').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') + '.png';
   async function download(s) {
@@ -457,8 +477,5 @@
   const set = () => { const v = mq.matches ? M : D; svgs.forEach((s) => s.setAttribute('viewBox', v.join(' ')));
     ['--vx', '--vy', '--vw', '--vh'].forEach((k, i) => art.style.setProperty(k, v[i])); };
   set(); (mq.addEventListener ? mq.addEventListener('change', set) : mq.addListener(set));
-})();
-(() => {   // phones: the gift labels sit under the heading as two clear buttons
-  document.querySelectorAll('.g5m [data-g]').forEach((b) => b.addEventListener('click', () => { const g = document.getElementById(b.dataset.g); if (g) g.click(); }));
 })();
 </script>

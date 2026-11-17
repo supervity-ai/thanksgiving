@@ -22,7 +22,7 @@ function size() {
   const w = stage.clientWidth, h = stage.clientHeight;
   canvas.width = Math.round(w * DPR); canvas.height = Math.round(h * DPR);
   SC = Math.min(h / 600, w / 600); WW = w / SC;
-  LIFT = h > w * 1.1 ? Math.min(110, h * .12) : 0;   // portrait: raise the floor above the touch hints
+  LIFT = 0;   // Keep the portrait scene low so Tom clears the mobile headline and button
   OFFY = (h - LIFT) / SC - 480;
   TOMX = clamp(236 - (1000 - WW) * .3, 96, 236);
   placeDesk();
@@ -30,7 +30,7 @@ function size() {
 const desk = $('desk');
 function placeDesk() {
   const x = (DESKX - (G ? G.dist : 0)) * SC;
-  const k = .82;
+  const k = matchMedia('(max-width: 760px)').matches ? 1.04 : .82;
   desk.style.width = (360 * k * SC) + 'px';
   desk.style.transform = 'translate(' + x + 'px,' + ((OFFY + GROUND - 290 * k) * SC) + 'px)';
 }
@@ -53,8 +53,7 @@ function start() {
   G = fresh(); lastHud = '';
   G.y = GROUND - 44; G.vy = -720;          // Tom hops up out of his chair and lands running
   setState('play');
-  const r = hero.getBoundingClientRect();
-  if (Math.abs(r.top) > 2) window.scrollTo({ top: window.scrollY + r.top, behavior: 'smooth' });
+  // Do not auto-scroll the page when the user starts the game; keep native page scrolling.
   setTimeout(() => $('hit').focus({ preventScroll: true }), 80);
 }
 function toTitle() { clearTimeout(overTimer); G = fresh(); setState('title'); $('start').focus({ preventScroll: true }); }

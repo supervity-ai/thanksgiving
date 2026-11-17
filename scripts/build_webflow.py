@@ -13,7 +13,7 @@ OUT = ROOT / "webflow-embeds"
 ASSETS = ROOT / "assets"
 CSS_SOURCE = ROOT / "scripts" / "thanksgiving.base.css"
 PREVIEW = ROOT / "preview" / "index.html"
-BASE_URL = "https://cdn.jsdelivr.net/gh/vishaltestin/supervity-thanks-giving-final@main/assets/"
+BASE_URL = "https://cdn.jsdelivr.net/gh/supervity-ai/thanksgiving@main/assets/"
 MAX_CHARS = 50_000
 
 
@@ -126,15 +126,85 @@ def build():
         # orphaned as invalid CSS.
         css_patch = """
 :root{--tgv-top:0px;--tgv-nav:12rem}
+@media(max-width:900px){:root{--tgv-top:30px;--tgv-nav:80px}}
+.svtg-mobile-game-hint{display:none}
 @media (min-width:992px) and (max-width:1199px){:root{--tgv-nav:13rem}}
-.tgx.tg-bar,.tgx.tg-nav{display:none!important}
+.svtg-thx26.tg-bar,.svtg-thx26.tg-nav{display:none!important}
 .w-nav{z-index:10001!important}
-.tg-modal:where(.tgx,.tgx *){z-index:999999!important}
-.c5:where(.tgx,.tgx *){z-index:999999!important}
-.s5dim:where(.tgx,.tgx *){z-index:999998!important}
-.over:where(.tgx,.tgx *){z-index:999999!important}
-.s5floor.down:where(.tgx,.tgx *){width:100%;height:100%}
+.tg-modal:where(.svtg-thx26,.svtg-thx26 *){z-index:999999!important}
+.c5:where(.svtg-thx26,.svtg-thx26 *){z-index:999999!important}
+.s5dim:where(.svtg-thx26,.svtg-thx26 *){z-index:999998!important}
+.over:where(.svtg-thx26,.svtg-thx26 *){z-index:999999!important}
+.s5floor.down:where(.svtg-thx26,.svtg-thx26 *){width:100%;height:100%}
+.s5vp:where(.svtg-thx26,.svtg-thx26 *){padding-top:clamp(52px,7vh,76px)}
+.s5art:where(.svtg-thx26,.svtg-thx26 *) .tl-img{top:auto;bottom:0;height:216.6667%;-webkit-mask-image:none!important;mask-image:none!important}
+.s7:where(.svtg-thx26,.svtg-thx26 *){position:relative;z-index:2;height:auto!important;min-height:0!important;max-height:none!important;overflow:visible!important}
+.s7:where(.svtg-thx26,.svtg-thx26 *)>.tg-wrap{height:auto!important;min-height:0!important;max-height:none!important;overflow:visible!important}
+.w7wall:where(.svtg-thx26,.svtg-thx26 *){height:auto!important;min-height:0!important;max-height:none!important;overflow:visible!important;grid-auto-rows:auto;align-items:stretch}
+.w-embed:has(.svtg-thx26.s7){position:relative!important;z-index:2;height:auto!important;min-height:0!important;max-height:none!important;overflow:visible!important}
 #hero .copy{top:var(--tgv-nav)!important}
+.svtg-thx26 p{color:#5D514C}
+.svtg-thx26 svg{max-width:100%}
+.svtg-thx26 .btn{max-width:100%;white-space:normal;overflow-wrap:anywhere}
+.svtg-thx26 .btn svg{flex:none;max-width:22px}
+.svtg-thx26 .cs-panel{min-width:0;overflow:visible}
+.svtg-thx26 .cs-acts{min-width:0;flex-wrap:wrap}
+.svtg-thx26 .cs-acts button{min-width:0;max-width:100%;white-space:normal}
+.svtg-thx26 .cs-canvas{max-width:100%}
+.svtg-thx26 svg{overflow:visible}
+.svtg-thx26 button{box-sizing:border-box;min-width:0;max-width:100%}
+.svtg-thx26 .s5{width:100vw;max-width:none;margin-left:calc(50% - 50vw)}
+@media(max-width:760px){
+:root{--tgv-top:30px;--tgv-nav:80px}
+.svtg-mobile-game-hint{display:inline}
+.svtg-desktop-game-hint{display:none!important}
+.s4:where(.svtg-thx26,.svtg-thx26 *){display:none!important}
+.hero:where(.svtg-thx26,.svtg-thx26 *){min-height:0;height:100svh;height:100dvh}
+#hero .copy{top:calc(var(--chrome) + clamp(10px,1.8vh,16px))!important;width:100%;padding:0 18px;gap:8px}
+.copy:where(.svtg-thx26,.svtg-thx26 *) h1{font-size:clamp(30px,8vw,38px);line-height:1.04}
+.copy:where(.svtg-thx26,.svtg-thx26 *) p{max-width:34ch;font-size:13px!important;line-height:1.34!important;color:#5D514C}
+.copy:where(.svtg-thx26,.svtg-thx26 *) .btn{margin-top:0;min-height:46px}
+.desk:where(.svtg-thx26,.svtg-thx26 *){z-index:2;visibility:visible;opacity:1}
+.hit:where(.svtg-thx26,.svtg-thx26 *){touch-action:pan-y}
+.s5:where(.svtg-thx26,.svtg-thx26 *){width:100vw;max-width:none;margin-left:calc(50% - 50vw);overflow:visible}
+.s5vp:where(.svtg-thx26,.svtg-thx26 *){min-height:0;max-height:none;padding:0 0 20px;overflow:visible}
+.s5head:where(.svtg-thx26,.svtg-thx26 *){position:relative;inset:auto;padding:24px 18px 0;margin:0 auto 14px;z-index:6}
+.s5scene:where(.svtg-thx26,.svtg-thx26 *){position:relative;inset:auto;display:block;width:100%;height:clamp(220px,56vw,270px);flex:none;overflow:hidden}
+.s5tom:where(.svtg-thx26,.svtg-thx26 *){width:clamp(64px,18vw,88px)}
+.g5-tag:where(.svtg-thx26,.svtg-thx26 *){display:none!important}
+.g5m:where(.svtg-thx26,.svtg-thx26 *){display:none!important}
+.g5:where(.svtg-thx26,.svtg-thx26 *){width:clamp(90px,24vw,112px);bottom:10%;z-index:9}
+.svtg-thx26 #g1{left:21%!important}
+.svtg-thx26 #g2{left:77%!important}
+.svtg-thx26 .cs-hint{display:none}
+.s5:where(.svtg-thx26,.svtg-thx26 *){position:relative;left:auto;width:100vw;max-width:none;margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw);transform:none;overflow:visible}
+.s5dim:where(.svtg-thx26,.svtg-thx26 *){position:fixed!important;inset:0!important}
+.s5head:where(.svtg-thx26,.svtg-thx26 *){text-align:center}
+.s5head:where(.svtg-thx26,.svtg-thx26 *) h2{font-size:clamp(26px,7vw,32px);line-height:1.08}
+.s5head:where(.svtg-thx26,.svtg-thx26 *) p{max-width:34ch;margin:10px auto 0;font-size:14px;line-height:1.45;color:#5D514C}
+.c5:where(.svtg-thx26,.svtg-thx26 *){position:fixed!important;top:calc(var(--tgv-top) + var(--tgv-nav) + 12px)!important;right:14px;bottom:12px;left:14px!important;width:auto!important;max-height:none!important;transform:none!important;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(108px,24vh) minmax(0,1fr);overflow:hidden!important}
+.c5.show:where(.svtg-thx26,.svtg-thx26 *){transform:none!important}
+.c5-vis:where(.svtg-thx26,.svtg-thx26 *){min-height:0;padding:12px!important}
+.c5-vis:where(.svtg-thx26,.svtg-thx26 *) svg{max-width:100px;max-height:100%;width:auto}
+.c5-body:where(.svtg-thx26,.svtg-thx26 *){min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:18px 20px 24px;gap:8px}
+.s5:not(.arrived):where(.svtg-thx26,.svtg-thx26 *) .g5{pointer-events:none}
+.svtg-thx26 .cs-tabs,.svtg-thx26 .cs-pane[data-pane=look],.svtg-thx26 .cs-pane[data-pane=stick],.svtg-thx26 .svtg-card-message,.svtg-thx26 .cs-two,.svtg-thx26 .cs-chips{display:none!important}
+.svtg-thx26 .cs-pane[data-pane=words]{display:flex!important;gap:12px}
+.svtg-thx26 .cs-acts #csMore{display:none!important}
+.svtg-thx26 .cs-acts .cs-shuffle{order:-1;justify-content:center;border:1px solid #E8D3C9;border-radius:999px;background:#fff;padding:12px 16px;font-size:15px}
+.svtg-thx26 .cs-acts .cs-shuffle svg{flex:none}
+.svtg-thx26 .cs{grid-template-columns:minmax(0,1fr);gap:18px}
+.svtg-thx26 .cs-stage{order:2}
+.svtg-thx26 .cs-panel{order:1;padding:20px;gap:12px}
+.svtg-thx26 .cs-f input{min-width:0;width:100%;box-sizing:border-box;color:#21150F}
+.svtg-card-note{margin:0;color:#5D514C;font-size:14px;line-height:1.45}
+.svtg-thx26 .cs-acts{display:grid;grid-template-columns:1fr;gap:10px}
+.svtg-thx26 .cs-acts button{width:100%;min-height:48px}
+.svtg-thx26 .cs-canvas{overflow:hidden}
+.svtg-thx26 .cs-canvas canvas{touch-action:pan-y}
+.svtg-thx26 .cs-shuffle{justify-content:center;border:1px solid #E8D3C9;border-radius:999px;background:#fff;padding:12px 16px;font-size:15px}
+.svtg-thx26 .cs-shuffle svg{flex:none}
+}
 """
         css_source = CSS_SOURCE.read_text() + css_patch
         css_full = minify_css(css_source, tmp)
