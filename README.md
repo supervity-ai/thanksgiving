@@ -29,7 +29,7 @@ The generated `webflow-embeds/` files are in paste order:
 3. `04-content-a.html`, `05-content-b.html`, `06-content-c.html` — page content.
 4. `07-scripts.html` — page scripts.
 
-Use the real Webflow navbar; the optional mock navbar and promo bar are hidden. The campaign hero has responsive top spacing (12rem, with 13rem in the 992–1199px range). The Section 05 downstairs floor is explicitly kept full-size so the complete two-floor office/lobby scene can render.
+Use the real Webflow navbar; the optional mock navbar and promo bar are hidden. The real `.w-nav` is layered above campaign sections (`z-index: 10001`); all campaign dialogs/popups are layered above it (`z-index: 999999`), with the Section 05 dimmer just below its card (`999998`). The campaign hero has responsive top spacing (12rem, with 13rem in the 992–1199px range). The Section 05 downstairs floor is explicitly kept full-size so the complete two-floor office/lobby scene can render.
 
 ## Asset hosting
 

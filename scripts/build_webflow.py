@@ -128,6 +128,11 @@ def build():
 :root{--tgv-top:0px;--tgv-nav:12rem}
 @media (min-width:992px) and (max-width:1199px){:root{--tgv-nav:13rem}}
 .tgx.tg-bar,.tgx.tg-nav{display:none!important}
+.w-nav{z-index:10001!important}
+.tg-modal:where(.tgx,.tgx *){z-index:999999!important}
+.c5:where(.tgx,.tgx *){z-index:999999!important}
+.s5dim:where(.tgx,.tgx *){z-index:999998!important}
+.over:where(.tgx,.tgx *){z-index:999999!important}
 .s5floor.down:where(.tgx,.tgx *){width:100%;height:100%}
 #hero .copy{top:var(--tgv-nav)!important}
 """
