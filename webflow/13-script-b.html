@@ -6,15 +6,18 @@
   const fly = document.getElementById('flypile'), carry = document.getElementById('carry');
   const modal = document.getElementById('amodal'), form = document.getElementById('aform');
   let started = false, lastFocus = null;
+  const isMob = () => innerWidth <= 760;   // phones: the form is part of the page, never a pop-up
   const state = (s) => { m.className = m.className.replace(/st-\w+/, 'st-' + s); };
   const wait = (ms) => new Promise((r) => setTimeout(r, ms));
   function openForm() {
+    if (isMob()) { modal.hidden = false; return; }   // already on the page, nothing to pop up
     lastFocus = document.activeElement; modal.hidden = false;
     requestAnimationFrame(() => modal.classList.add('show'));
     state('form'); document.body.style.overflow = 'hidden';
     setTimeout(() => { const f = document.getElementById('q1'); if (f && !JOTFORM_ID) f.focus({ preventScroll: true }); }, 380);
   }
   function closeForm(next) {
+    if (isMob()) { if (next === 'processing') modal.hidden = true; return; }   // the inline form never closes
     modal.classList.remove('show'); document.body.style.overflow = '';
     setTimeout(() => { modal.hidden = true; }, 350);
     if (next !== 'processing') state('missed');   // closed without finishing: the machine asks them back
@@ -34,11 +37,12 @@
     await wait(350); m.classList.add('shake');
     await wait(600); m.classList.remove('shake', 'gulp');
     state('ready'); await wait(650);
-    if (inView) openForm(); else pending = true;   // the form pops up by itself, only while the visitor is here
+    if (isMob()) return;                             // phones read the form in place, see .s3note
+    if (inView) openForm(); else pending = true;     // the form pops up by itself, only while the visitor is here
   }
   let inView = false, pending = false;
-  new IntersectionObserver((es) => { inView = es[0].isIntersecting; if (inView) { if (pending) { pending = false; openForm(); } deliver(); } }, { threshold: .55 }).observe(m);
-  document.getElementById('m3screen').addEventListener('click', () => { if (/st-(ready|missed)/.test(m.className)) openForm(); });
+  new IntersectionObserver((es) => { inView = es[0].isIntersecting; if (inView) { if (pending) { pending = false; if (!isMob()) openForm(); } deliver(); } }, { threshold: .55 }).observe(m);
+  document.getElementById('m3screen').addEventListener('click', () => { if (!isMob() && /st-(ready|missed)/.test(m.className)) openForm(); });
   document.getElementById('aclose').addEventListener('click', () => closeForm());
   modal.addEventListener('click', (e) => { if (e.target === modal) closeForm(); });
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !modal.hidden) closeForm(); });
@@ -53,6 +57,7 @@
       if (/submission-completed|formSubmitted/i.test(d)) run('');
     });
   }
+  if (isMob()) { modal.hidden = false; }   // the form replaces the card that used to sit under the machine
   const q4 = document.getElementById('q4');
   q4.addEventListener('input', () => { const v = +q4.value; document.getElementById('q4v').textContent = v >= 60 ? (v / 60).toFixed(v % 60 ? 1 : 0) + (v === 60 ? ' hour' : ' hours') : v + ' minutes'; });
   form.addEventListener('submit', (e) => {
@@ -110,97 +115,6 @@
     rowsEl.querySelectorAll('.t4row').forEach((r) => r.classList.remove('out'));
     toms.forEach((t, i) => t.classList.toggle('on', i === 0));
   });
-})();
-
-(() => {
-  const sec = document.getElementById('sec5'), vp = document.getElementById('s5vp'), scene = document.getElementById('s5scene'), strip = document.getElementById('s5strip');
-  const floors = [...strip.querySelectorAll('.s5floor')], arts = [...strip.querySelectorAll('.s5art')], slab = strip.querySelector('.tl-slab');
-  const a = strip.querySelector('.tl-a'), b = strip.querySelector('.tl-b');
-  const tomA = document.getElementById('s5tomA'), tomB = document.getElementById('s5tomB'), dim = document.getElementById('s5dim');
-  const gifts = [...sec.querySelectorAll('.g5')];
-  const LIFT = 650, SPOT = { g1: 745, g2: 1045 };
-  let sc = 1, focus = 560, down = false, started = false, arrived = false, busy = false, tomX = LIFT, openCard = null, lastGift = null;
-  const wait = (ms) => new Promise((r) => setTimeout(r, ms));
-  const mob = () => scene.clientWidth <= 760;
-  const head = sec.querySelector('.s5head');
-  function layout(anim) {
-    const W = scene.clientWidth, hh = head.offsetTop + head.offsetHeight + 12;
-    vp.style.height = ''; vp.style.minHeight = ''; vp.style.maxHeight = '';
-    if (mob()) {
-      const mobileSceneH = Math.max(220, Math.min(270, W * .56));
-      scene.style.height = Math.round(mobileSceneH) + 'px';
-      sc = W / 1600; // fit the full room width edge-to-edge on phones
-      vp.style.minHeight = '0'; vp.style.height = Math.round(hh + mobileSceneH + 20) + 'px';
-    } else {
-      scene.style.height = '';
-      sc = W / 1600; // fill the complete viewport width; never letterbox the room artwork
-      const needed = Math.ceil(hh + 600 * sc + 40);
-      if (vp.clientHeight < needed) {
-        vp.style.minHeight = '0'; vp.style.maxHeight = 'none'; vp.style.height = needed + 'px';
-      } else {
-        vp.style.height = '';
-      }
-    }
-    const H = scene.clientHeight;
-    const aw = 1600 * sc, ah = 600 * sc;
-    const x = aw > W ? Math.min(0, Math.max(W - aw, W / 2 - focus * sc)) : (W - aw) / 2;
-    floors.forEach((f, i) => { f.style.height = H + 'px'; f.style.setProperty('--fb', ((i ? 86 : 94) * sc) + 'px'); });
-    arts.forEach((el) => { el.style.transition = anim ? 'left 1s cubic-bezier(.6,0,.3,1)' : 'none'; el.style.width = aw + 'px'; el.style.height = ah + 'px'; el.style.left = x + 'px'; });
-    if (!anim) strip.style.transition = 'none';
-    strip.style.transform = 'translateY(' + (down ? -(H + slab.offsetHeight) : 0) + 'px)';
-    if (!anim) { void strip.offsetWidth; strip.style.transition = ''; }
-  }
-  addEventListener('resize', () => layout(false));
-  a.classList.add('open'); layout(false);
-
-  async function ride() {                       // about 3 seconds from the office floor to the lounge
-    if (started) return; started = true;
-    tomA.classList.add('walking'); tomA.style.left = (LIFT / 16) + '%';
-    await wait(1000); tomA.classList.remove('walking'); tomA.classList.add('inside'); await wait(250); a.classList.remove('open');
-    await wait(400);
-    sec.classList.add('moving'); sec.querySelectorAll('.tl-n').forEach((n) => { n.textContent = '3'; });
-    down = true; focus = mob() ? 935 : 900; layout(true);
-    await wait(1000); sec.classList.remove('moving');
-    tomB.classList.add('inside', 'idle'); tomB.style.opacity = '1'; b.classList.add('open');
-    await wait(450); tomB.classList.add('out'); tomB.classList.remove('inside');   // steps out in front of the lift
-    await wait(350); sec.classList.add('arrived'); arrived = true;
-    await wait(700); b.classList.remove('open');
-  }
-  new IntersectionObserver((es) => { if (es[0].isIntersecting) ride(); }, { threshold: .18 }).observe(vp);
-
-  function walkTo(x) {
-    return new Promise((res) => {
-      const d = Math.abs(x - tomX); if (d < 2) { res(); return; }
-      const t = d / 430;
-      tomB.classList.toggle('flip', x < tomX); tomB.classList.remove('yay'); tomB.classList.add('walking');
-      tomB.style.transition = 'left ' + t + 's linear'; tomB.style.left = (x / 16) + '%'; tomX = x;
-      setTimeout(() => { tomB.classList.remove('walking', 'flip'); res(); }, t * 1000);
-    });
-  }
-  async function pick(g, trigger = g) {
-    if (!arrived || busy) return; busy = true; lastGift = trigger;
-    sec.classList.add('picking'); gifts.forEach((o) => o.classList.toggle('picked', o === g));
-    await walkTo(SPOT[g.id]);                   // Tom goes and stands beside the chosen gift
-    g.classList.add('opened'); tomB.classList.add('yay');
-    await wait(1000);
-    show(document.getElementById(g.id + '-card')); busy = false;
-  }
-  function show(c) {
-    openCard = c; vp.classList.add('has-open'); dim.classList.add('show'); c.hidden = false;
-    requestAnimationFrame(() => requestAnimationFrame(() => c.classList.add('show')));
-    setTimeout(() => c.querySelector('.c5-cta').focus({ preventScroll: true }), 420);
-  }
-  function close() {
-    if (!openCard) return; const c = openCard; openCard = null;
-    c.classList.remove('show'); dim.classList.remove('show'); vp.classList.remove('has-open');
-    setTimeout(() => { c.hidden = true; }, 400);
-    gifts.forEach((o) => o.classList.remove('opened', 'picked')); sec.classList.remove('picking'); tomB.classList.remove('yay');
-    if (lastGift) lastGift.focus({ preventScroll: true });
-  }
-  gifts.forEach((g) => g.addEventListener('click', () => pick(g)));
-  sec.querySelectorAll('.c5x').forEach((x) => x.addEventListener('click', close));
-  dim.addEventListener('click', close);
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && openCard) close(); });
 })();
 
 (() => {
@@ -407,48 +321,165 @@
 })();
 
 (() => {
-  /* Where the thanks are stored. Fill ONE of these to make the wall live and shared:
-     1) Supabase: SUPABASE_URL + SUPABASE_KEY (anon key) and a table "thanks" (see README).
-     2) Your own endpoint: API_URL that answers GET with [{name, text}] and accepts POST {name, text}.
-     With neither filled in, the wall saves in this browser only (for previewing). */
-  const SUPABASE_URL = '', SUPABASE_KEY = '', API_URL = '';
-  const MAX = 12, POLL = 20000;
+  /* ---- Wall of Thanks: live and shared, one PHP endpoint ----------------
+     API_URL  = the wall-of-thanks/api.php endpoint (repo/wall-of-thanks/).
+                Leave it empty to keep the wall local to this browser.
+     The endpoint answers:  GET  -> { ok, total, submissionsOpen, closedMessage, messages:[{id,name,message,timestamp}] }
+                            POST -> { ok, message:{...} }   body {name, message, website, elapsedMs} */
+  const API_URL = 'https://digitalfueled.in/vishal/wall-of-thanks/thanks-giving/api.php';
+  const MAX = 12, POLL = 20000, LOCAL = 'tg-thanks-local', CACHE = 'tg-thanks-cache';
   const wall = document.getElementById('w7wall'), form = document.getElementById('w7form'), err = document.getElementById('w7err');
   const nameIn = document.getElementById('w7name'), textIn = document.getElementById('w7text'), go = document.getElementById('w7go');
+  if (!wall || !form || form.dataset.wallInit === 'true') return;
+  form.dataset.wallInit = 'true';
   const BLOCK = /\b(fuck|shit|bitch|cunt|dick|asshole|bastard|slut|whore|nigg|fag)\w*/i;
-  const esc = (s) => s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const esc = (s) => String(s || '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const HEART = '<svg viewBox="0 0 48 48" aria-hidden="true"><defs><linearGradient id="tgHeart" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F06A2A"/><stop offset=".55" stop-color="#D8436A"/><stop offset="1" stop-color="#5D5FD8"/></linearGradient></defs><circle cx="24" cy="24" r="24" fill="url(#tgHeart)"/><path d="M24 35s-10-6.2-10-14a5.6 5.6 0 0 1 10-3.4A5.6 5.6 0 0 1 34 21c0 7.8-10 14-10 14z" fill="#FBE3D0"/><path d="M18.5 19.5a3 3 0 0 1 3-2.4" stroke="#fff" stroke-width="2" stroke-linecap="round" fill="none"/></svg>';
-  const sb = (path, opt = {}) => fetch(SUPABASE_URL + '/rest/v1/' + path, Object.assign({ headers: Object.assign({ apikey: SUPABASE_KEY, Authorization: 'Bearer ' + SUPABASE_KEY }, opt.headers || {}) }, opt.init || {}));
-  const api = SUPABASE_URL ? {
-    list: () => sb('thanks?select=name,text,created_at&order=created_at.desc&limit=' + MAX).then((r) => { if (!r.ok) throw r; return r.json(); }),
-    add: (e) => sb('thanks', { headers: { 'Content-Type': 'application/json', Prefer: 'return=minimal' }, init: { method: 'POST', body: JSON.stringify(e) } }).then((r) => { if (!r.ok) throw r; })
-  } : API_URL ? {
-    list: () => fetch(API_URL).then((r) => { if (!r.ok) throw r; return r.json(); }),
-    add: (e) => fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(e) }).then((r) => { if (!r.ok) throw r; })
-  } : {
-    list: async () => { try { return JSON.parse(localStorage.getItem('tg-thanks') || '[]'); } catch (e) { return []; } },
-    add: async (e) => { let a = []; try { a = JSON.parse(localStorage.getItem('tg-thanks') || '[]'); } catch (x) {} a.unshift(e); try { localStorage.setItem('tg-thanks', JSON.stringify(a.slice(0, 60))); } catch (x) {} }
-  };
-  const live = !!(SUPABASE_URL || API_URL);
-  const SEED = [{name:'Maya',text:'A team that covers for each other without being asked.'},{name:'Daniel',text:'Fewer status meetings and more time to actually build.'},{name:'Priya',text:'The colleague who explained the new process twice, kindly.'},{name:'Leo',text:'Finally clearing the invoice backlog before the holidays.'},{name:'Ava',text:'Coffee, good playlists and a manager who listens.'},{name:'Sam',text:'Small wins every week that added up to a big year.'}];   // sample thanks shown alongside real ones; edit or empty this list
-  let items = [];
+  // Sample thanks. SHOW_SEED_ALWAYS = true keeps them under the real notes; false shows
+  // them only while the wall is empty (recommended once real submissions arrive).
+  const SEED = [{name:'Maya',text:'A team that covers for each other without being asked.'},{name:'Daniel',text:'Fewer status meetings and more time to actually build.'},{name:'Priya',text:'The colleague who explained the new process twice, kindly.'},{name:'Leo',text:'Finally clearing the invoice backlog before the holidays.'},{name:'Ava',text:'Coffee, good playlists and a manager who listens.'},{name:'Sam',text:'Small wins every week that added up to a big year.'}];
+  const SHOW_SEED_ALWAYS = false;
+  const reduce = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+  let items = [], open = true, busy = false, loadedAt = Date.now(), tried = false;
+  const live = !!API_URL;
+
+  function track(name, extra) {
+    try { (window.dataLayer = window.dataLayer || []).push(Object.assign({ event: name }, extra || {})); } catch (e) {}
+  }
+  function say(text, kind) {
+    if (!err) return;
+    err.textContent = text || '';
+    err.hidden = !text;
+    err.dataset.type = kind || '';
+    err.style.color = kind === 'ok' ? '#1B7A48' : kind === 'info' ? 'rgba(0,0,0,.6)' : '';
+  }
   const cardHTML = (e) => '<span class="hb">' + HEART + '</span><div><div class="who"><b>' + esc(e.name || 'Someone') + '</b> is thankful for:</div><p class="what">' + esc(e.text) + '</p></div>';
+
   function render(fresh) {
     wall.innerHTML = '';
-    items.concat(SEED).slice(0, MAX).forEach((e, i) => { const d = document.createElement('div'); d.className = 'w7card' + (fresh && i === 0 ? ' new' : ''); d.innerHTML = cardHTML(e); wall.appendChild(d); });
+    const list = SHOW_SEED_ALWAYS ? items.concat(SEED) : (items.length ? items : SEED);
+    list.slice(0, MAX).forEach((e, i) => {
+      const d = document.createElement('div');
+      d.className = 'w7card' + (fresh && i === 0 ? ' new' : '');
+      d.innerHTML = cardHTML(e);
+      wall.appendChild(d);
+    });
+    if (fresh && wall.firstChild) burst(wall.firstChild);
   }
-  async function load() { try { const got = await api.list(); if (Array.isArray(got)) { items = got; render(false); } } catch (e) {} }
+
+  /* a small shower of leaves above the card that was just added */
+  function burst(card) {
+    if (reduce || !card.animate) return;
+    const colors = ['#F06A2A', '#F9A98C', '#5E9F7C', '#6890EA', '#F7C948'];
+    for (let i = 0; i < 14; i++) {
+      const s = document.createElement('i');
+      const size = 4 + Math.random() * 5;
+      s.style.cssText = 'position:absolute;left:' + (12 + Math.random() * 76) + '%;top:6px;width:' + size + 'px;height:' + (size * 1.6) + 'px;border-radius:2px 6px 2px 6px;pointer-events:none;background:' + colors[i % colors.length];
+      card.appendChild(s);
+      s.animate(
+        [{ transform: 'translate(0,0) rotate(0deg)', opacity: 1 },
+         { transform: 'translate(' + (Math.random() - 0.5) * 90 + 'px,' + (50 + Math.random() * 70) + 'px) rotate(' + (Math.random() * 360 - 180) + 'deg)', opacity: 0 }],
+        { duration: 900 + Math.random() * 500, easing: 'cubic-bezier(.25,.6,.4,1)' }
+      ).onfinish = () => s.remove();
+    }
+  }
+
+  /* ---- storage ---------------------------------------------------------- */
+  const readLocal = (key) => { try { return JSON.parse(localStorage.getItem(key) || '[]'); } catch (e) { return []; } };
+  function normalise(data) {
+    if (Array.isArray(data)) return { items: data.map((m) => ({ name: m.name, text: m.text != null ? m.text : m.message })), open: true };
+    if (data && Array.isArray(data.messages)) {
+      return {
+        items: data.messages.map((m) => ({ name: m.name, text: m.message != null ? m.message : m.text })),
+        open: data.submissionsOpen !== false,
+        closed: data.closedMessage || ''
+      };
+    }
+    return { items: [], open: true };
+  }
+  function request(url, opt, ms) {
+    const ctl = new AbortController();
+    const timer = setTimeout(() => ctl.abort(), ms || 12000);
+    return fetch(url, Object.assign({ signal: ctl.signal, cache: 'no-store' }, opt || {}))
+      .then((r) => r.json().catch(() => null).then((data) => {
+        if (!r.ok || !data || data.ok === false) throw new Error((data && data.error) || 'Something went wrong. Please try again.');
+        return data;
+      }))
+      .catch((e) => { if (e && e.name === 'AbortError') throw new Error('That took too long. Please try again.'); throw e; })
+      .finally(() => clearTimeout(timer));
+  }
+  const api = !live ? {
+    list: () => Promise.resolve({ items: readLocal(LOCAL), open: true }),
+    add: (e) => { const a = readLocal(LOCAL); a.unshift(e); try { localStorage.setItem(LOCAL, JSON.stringify(a.slice(0, 60))); } catch (x) {} return Promise.resolve(); }
+  } : {
+    list: () => request(API_URL),
+    add: (e) => request(API_URL, {
+      method: 'POST',
+      // text/plain keeps this a "simple" request so the browser skips the CORS preflight
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ name: e.name, message: e.text, website: (form.website && form.website.value) || '', elapsedMs: Date.now() - loadedAt })
+    })
+  };
+
+  function setClosed(msg) {
+    open = false;
+    form.hidden = true;
+    say(msg || 'The wall is closed — thank you to everyone who shared.', 'info');
+  }
+
+  async function load(quiet) {
+    if (!quiet) tried = true;
+    try {
+      const got = normalise(await api.list());
+      items = got.items;
+      if (got.open === false) setClosed(got.closed);
+      if (live) { try { localStorage.setItem(CACHE, JSON.stringify(items.slice(0, 60))); } catch (e) {} }
+      render(false);
+    } catch (e) {
+      // endpoint down: show the last notes we saw, or the samples while the wall is empty
+      const cached = readLocal(CACHE);
+      if (cached.length && !items.length) items = cached;
+      render(false);
+      if (live && cached.length) say('Showing the last saved notes — live updates are unavailable right now.', 'info');
+    }
+  }
+
+  /* ---- submit ----------------------------------------------------------- */
   form.addEventListener('submit', async (ev) => {
-    ev.preventDefault(); err.hidden = true;
+    ev.preventDefault();
+    if (busy || !open) return;
     const e = { name: nameIn.value.trim().slice(0, 40), text: textIn.value.trim().slice(0, 140) };
-    if (e.text.length < 2) { textIn.focus(); return; }
-    if (BLOCK.test(e.name + ' ' + e.text)) { err.textContent = 'Please keep it kind. Try different words.'; err.hidden = false; return; }
-    go.disabled = true; items.unshift(e); render(true); textIn.value = '';
-    try { await api.add(e); } catch (x) { items.shift(); render(false); textIn.value = e.text; err.textContent = 'Your thanks could not be added just now. Please try again.'; err.hidden = false; }
-    go.disabled = false;
+    if (e.text.length < 2) { textIn.focus(); say('Add a line about what you are thankful for.', ''); return; }
+    if (BLOCK.test(e.name + ' ' + e.text)) { say('Please keep it kind. Try different words.', ''); return; }
+    busy = true;
+    if (go) { go.disabled = true; go.style.opacity = '.65'; }
+    say('', '');
+    items.unshift(e); render(true); textIn.value = ''; textIn.focus();
+    try {
+      await api.add(e);
+      loadedAt = Date.now();
+      track('thanks_submit', { name: e.name });
+      say('Thank you — your note is on the wall.', 'ok');
+    } catch (x) {
+      items.shift(); render(false); textIn.value = e.text;
+      track('thanks_submit_error', { reason: (x && x.message) || 'unknown' });
+      say((x && x.message) || 'Your thanks could not be added just now. Please try again.', '');
+    } finally {
+      busy = false;
+      if (go) { go.disabled = false; go.style.opacity = ''; }
+    }
   });
-  load();
-  if (live) setInterval(() => { if (document.visibilityState === 'visible' && !document.activeElement.closest('#w7form')) load(); }, POLL);
+
+  /* ---- go --------------------------------------------------------------- */
+  load(false);
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((es) => { if (es[0].isIntersecting) { track('thanks_view'); io.disconnect(); } }, { threshold: .3 });
+    io.observe(wall);
+  }
+  if (live) setInterval(() => {
+    const focused = document.activeElement && document.activeElement.closest && document.activeElement.closest('#w7form');
+    if (document.visibilityState === 'visible' && !focused && !busy) load(true);
+  }, POLL);
 })();
 
 (() => {

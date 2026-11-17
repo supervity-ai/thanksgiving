@@ -1,5 +1,18 @@
 <script>
 (function(){var w=window;w.TG_ASSET=w.TG_ASSET||function(n){var m=w.TG_ASSET_MAP||{};return m[n]||(w.TG_ASSET_BASE||'')+n};var r=document.documentElement.style,v={"--tg-chrome-bar": "chrome-bar.svg", "--tg-doodle": "doodle.png"};for(var k in v)r.setProperty(k,'url("'+w.TG_ASSET(v[k])+'")');document.querySelectorAll('[data-tg-src]').forEach(function(e){e.src=w.TG_ASSET(e.getAttribute('data-tg-src'))});document.querySelectorAll('[data-tg-href]').forEach(function(e){var u=w.TG_ASSET(e.getAttribute('data-tg-href'));e.setAttribute('href',u);e.setAttributeNS('http://www.w3.org/1999/xlink','xlink:href',u)});})();
+(() => {   // keep the campaign clear of the real Webflow chrome
+  'use strict';
+  const root = document.documentElement;
+  const apply = () => {
+    const nav = document.querySelector('.w-nav');
+    if (!nav) return;
+    const h = Math.min(Math.round(nav.offsetHeight) || 0, 220);   // ignore an opened mobile menu
+    if (h > 0) root.style.setProperty('--tgv-siteh', h + 'px');
+  };
+  apply();
+  addEventListener('load', apply);
+  addEventListener('resize', () => { apply(); setTimeout(apply, 300); });
+})();
 (() => {
 'use strict';
 const ASSETS = {"far_day": "game-far_day.svg", "near_day": "game-near_day.svg", "far_night": "game-far_night.svg", "near_night": "game-near_night.svg", "ob_stack": "game-ob_stack.svg", "ob_tower": "game-ob_tower.svg", "ob_boxes": "game-ob_boxes.svg", "ob_printer": "game-ob_printer.svg", "ob_chair": "game-ob_chair.svg", "ob_cart": "game-ob_cart.svg", "ob_plane": "game-ob_plane.svg", "ob_email": "game-ob_email.svg", "ob_clock": "game-ob_clock.svg", "run0": "game-run0.png", "run1": "game-run1.png", "run2": "game-run2.png", "run3": "game-run3.png", "run4": "game-run4.png", "run5": "game-run5.png", "run6": "game-run6.png", "run7": "game-run7.png", "jump": "game-jump.png", "over": "game-over.png"};

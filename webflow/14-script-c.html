@@ -1,0 +1,249 @@
+<script>
+  (function () {
+    var sec = document.getElementById("sec5"),
+      vp = document.getElementById("ggVp"),
+      strip = document.getElementById("ggStrip"),
+      up = document.getElementById("ggUp"),
+      down = document.getElementById("ggDown"),
+      w1 = document.getElementById("ggW1"),
+      w2 = document.getElementById("ggW2"),
+      tomA = document.getElementById("ggTomA"),
+      tomB = document.getElementById("ggTomB"),
+      gift = document.getElementById("ggGift"),
+      dim = document.getElementById("ggDim"),
+      card = document.getElementById("ggCard"),
+      closeBtn = document.getElementById("ggX"),
+      liftA = document.querySelector(".gg-lift.a"),
+      liftB = document.querySelector(".gg-lift.b");
+    if (!sec || !vp || !strip || !gift) return;
+    var giftBox = gift.querySelector(".gg-box"),
+      cf = gift.querySelector(".gg-cf");
+    var $ = function (s, r) {
+      return (r || sec).querySelector(s);
+    };
+    var $$ = function (s, r) {
+      return Array.prototype.slice.call((r || sec).querySelectorAll(s));
+    };
+    // Art coordinates: the world is 1600x1700 and the room's floor line sits at
+    // y=1300 (the art SVG's viewBox starts at -700, so drawing y + 700 = world y).
+    // The shareable "stage" - wall base, floor, Tom and the gift - spans y 452-1300.
+    var SHOT = { w: 1600 },
+      BAND = 848, // art units of stage that must stay visible vertically
+      STAGE = { x: 807, w: 480 }, // lift door -> gift: what has to stay visible across
+      FLOORLINE = 1300,
+      SLAB = 30,
+      reduce = window.matchMedia
+        ? matchMedia("(prefers-reduced-motion: reduce)").matches
+        : false;
+    var s = 1,
+      camX = 0,
+      camY = 0,
+      open = false,
+      done = false,
+      timers = [],
+      obs = [],
+      zone = null,
+      fired = false;
+    if (window.IntersectionObserver) {
+      zone = new IntersectionObserver(
+        function (e) {
+          if (e[0].isIntersecting && !fired) {
+            fired = true;
+            start();
+            zone.disconnect();
+          }
+        },
+        { threshold: 0.22 },
+      );
+    }
+    var KEYS = ["ggDot", "ggSay", "mw", "run0", "run1", "runB"];
+    function fit() {
+      var W = vp.clientWidth || 1200,
+        H = vp.clientHeight || 700;
+      // fill the small axis and crop the other one: on a phone this keeps Tom
+      // and the gift readable instead of shrinking the whole office to a stamp
+      s = Math.max(W / SHOT.w, Math.min(H / BAND, W / STAGE.w));
+      sec.style.setProperty("--s", s);
+      up.style.height = H + "px";
+      down.style.height = H + "px";
+      strip.style.top = "0px";
+      // camera: stage centred, floor line on the bottom edge
+      camX = W / 2 - STAGE.x * s;
+      camY = -(FLOORLINE * s - H);
+      cam(s, camX, camY, true);
+    }
+    function cam(scale, x, y, instant) {
+      [w1, w2].forEach(function (w) {
+        if (instant) {
+          w.classList.remove("cam");
+          w.style.transform =
+            "translate(" + x + "px," + y + "px) scale(" + scale + ")";
+        } else {
+          w.classList.add("cam");
+          w.style.transform =
+            "translate(" + x + "px," + y + "px) scale(" + scale + ")";
+        }
+      });
+    }
+    function wait(ms) {
+      return new Promise(function (r) {
+        timers.push(setTimeout(r, reduce ? Math.min(ms, 60) : ms));
+      });
+    }
+    function after(ms, fn) {
+      timers.push(setTimeout(fn, reduce ? Math.min(ms, 60) : ms));
+    }
+    function clearTimers() {
+      timers.forEach(clearTimeout);
+      timers = [];
+    }
+    function run() {
+      tomA.classList.add("walking");
+      tomB.classList.add("walking");
+    }
+    function stop() {
+      tomA.classList.remove("walking");
+      tomB.classList.remove("walking");
+    }
+    function arrive() {
+      if (done) return;
+      done = true;
+      stop();
+      gift.disabled = false;
+      sec.classList.add("ready");
+      sec.classList.add("arrived");
+      tomB.classList.remove("walking");
+      tomB.classList.add("yay");
+      after(2600, function () {
+        tomB.classList.remove("yay");
+      });
+      $$(".gg-small").forEach(function (el, i) {
+        after(200 + i * 120, function () {
+          el.classList.add("in");
+        });
+      });
+      if (KEYS.length) {
+        // tiny celebratory confetti puffs around the gift
+        var cf2 = gift.querySelector(".gg-cf");
+        for (var i = 0; i < 10; i++) {
+          var p = document.createElement("i");
+          p.style.cssText =
+            "width:" +
+            (4 + (i % 3) * 2) +
+            "px;height:" +
+            (6 + (i % 4) * 2) +
+            "px;background:" +
+            ["#FD6523", "#FDB13E", "#D7261E", "#F7A27C"][i % 4] +
+            ";--x:" +
+            (Math.random() * 120 - 60) +
+            "px;--y:" +
+            -(40 + Math.random() * 60) +
+            "px;--r:" +
+            (Math.random() * 240 - 120) +
+            "deg;--d:" +
+            (Math.random() * 0.3) +
+            "s";
+          cf && cf.appendChild(p);
+        }
+      }
+      [w2, tomB, gift].forEach(function (el) {
+        if (el) el.classList.add("walking");
+      });
+      [w2, tomB, gift].forEach(function (el) {
+        if (el) el.classList.remove("walking");
+      });
+    }
+    function start() {
+      run(); // Tom steps into the lift, the doors close, the car rides down
+      after(40, function () {
+        tomA.classList.add("go");
+        tomA.style.left = "575px"; // into the car
+      });
+      after(980, function () {
+        tomA.classList.add("inside");
+      });
+      after(1200, function () {
+        liftA.classList.remove("open");
+      });
+      after(1560, function () {
+        sec.classList.add("moving");
+        strip.style.transform =
+          "translateY(" + -(vp.clientHeight + SLAB) + "px)";
+      });
+      after(2600, function () {
+        tomA.classList.remove("walking");
+        liftB.classList.add("open");
+        tomB.classList.add("out");
+        sec.classList.remove("moving");
+        after(420, function () {
+          run();
+          walk();
+        });
+      });
+    }
+    function walk() {
+      // from the lift door to just in front of the gift (world units)
+      var from = 575,
+        to = 660,
+        steps = 2,
+        i = 0;
+      tomB.style.transition = "left .42s linear";
+      tomB.style.left = from + "px";
+      var step = function () {
+        i++;
+        tomB.style.left = Math.round(from + ((to - from) * i) / steps) + "px";
+        if (i < steps) {
+          after(420, step);
+        } else {
+          stop();
+          after(380, arrive);
+        }
+      };
+      after(160, step);
+    }
+    function openGift() {
+      if (open || gift.disabled) return;
+      open = true;
+      sec.classList.add("focus");
+      gift.classList.add("opened");
+      gift.setAttribute("aria-expanded", "true");
+      after(650, function () {
+        card.hidden = false;
+        dim.classList.add("show");
+        card.classList.add("show");
+        closeBtn.focus({ preventScroll: true });
+      });
+    }
+    function closeCard() {
+      card.classList.remove("show");
+      dim.classList.remove("show");
+      gift.setAttribute("aria-expanded", "false");
+      after(320, function () {
+        card.hidden = true;
+      });
+      open = false;
+      sec.classList.remove("focus");
+      gift.focus({ preventScroll: true });
+    }
+    gift.addEventListener("click", openGift);
+    closeBtn.addEventListener("click", closeCard);
+    dim.addEventListener("click", closeCard);
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && open) closeCard();
+    });
+    var resizeTimer = 0;
+    addEventListener("resize", function () {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(fit, 150);
+    });
+    fit();
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(fit);
+    }
+    if ($$("[data-tg-href]").length) {
+      addEventListener("tg-assets", fit);
+    }
+    if (zone) zone.observe(sec);
+    else start();
+  })();
+</script>

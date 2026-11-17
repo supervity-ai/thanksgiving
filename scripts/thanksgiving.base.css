@@ -41,7 +41,7 @@ button:where(.svtg-thx26,.svtg-thx26 *){font:inherit}
 .copy:where(.svtg-thx26,.svtg-thx26 *) .btn{margin-top:6px}
 .btn.line:where(.svtg-thx26,.svtg-thx26 *){background:transparent;color:var(--tgv-black);box-shadow:inset 0 0 0 1.5px var(--tgv-black)}
 .btn.line:hover:where(.svtg-thx26,.svtg-thx26 *){background:rgba(0,0,0,.04);filter:none}
-.btn:focus-visible:where(.svtg-thx26,.svtg-thx26 *),.back:focus-visible:where(.svtg-thx26,.svtg-thx26 *),.hit:focus-visible:where(.svtg-thx26,.svtg-thx26 *){outline:3px solid var(--tgv-blue);outline-offset:4px}
+.btn:focus-visible:where(.svtg-thx26,.svtg-thx26 *), .back:focus-visible:where(.svtg-thx26,.svtg-thx26 *), .hit:focus-visible:where(.svtg-thx26,.svtg-thx26 *){outline:3px solid var(--tgv-blue);outline-offset:4px}
 .desk:where(.svtg-thx26,.svtg-thx26 *){position:absolute;z-index:2;left:0;top:var(--chrome);transform-origin:0 0;will-change:transform}
 .desk:where(.svtg-thx26,.svtg-thx26 *) .tomhide{transition:opacity .15s}
 .desk:where(.svtg-thx26,.svtg-thx26 *) .tp{transition:opacity .12s}
@@ -83,7 +83,7 @@ button:where(.svtg-thx26,.svtg-thx26 *){font:inherit}
 .mood:where(.svtg-thx26,.svtg-thx26 *){position:relative;display:flex;justify-content:center}
 .mood:where(.svtg-thx26,.svtg-thx26 *) .t{width:min(100%,210px);display:none}
 .mood:where(.svtg-thx26,.svtg-thx26 *) .t svg{width:100%;height:auto;display:block}
-.m-happy:where(.svtg-thx26,.svtg-thx26 *) .t.happy,.m-tired:where(.svtg-thx26,.svtg-thx26 *) .t.tired,.m-exhausted:where(.svtg-thx26,.svtg-thx26 *) .t.exhausted{display:block}
+.m-happy:where(.svtg-thx26,.svtg-thx26 *) .t.happy, .m-tired:where(.svtg-thx26,.svtg-thx26 *) .t.tired, .m-exhausted:where(.svtg-thx26,.svtg-thx26 *) .t.exhausted{display:block}
 .mood:where(.svtg-thx26,.svtg-thx26 *) .t.tired svg{animation:tgk-sag 3s ease-in-out infinite;transform-origin:50% 100%}
 @keyframes tgk-sag{0%,100%{transform:rotate(-1.5deg)}50%{transform:rotate(1.5deg) translateY(3px)}}
 .mood:where(.svtg-thx26,.svtg-thx26 *) .t.exhausted svg{animation:tgk-sway 2.2s ease-in-out infinite;transform-origin:50% 100%}
@@ -159,7 +159,7 @@ button:where(.svtg-thx26,.svtg-thx26 *){font:inherit}
 @media (max-width:760px){.tg-wrap:where(.svtg-thx26,.svtg-thx26 *){padding:0 20px}
 .tg-sec:where(.svtg-thx26,.svtg-thx26 *){padding:64px 0}}
 .s3old:where(.svtg-thx26,.svtg-thx26 *){position:relative;background:radial-gradient(70% 60% at 50% 40%,#FFF1EA 0%,#FFF7F3 60%,#FFFFFF 100%);padding:28px 0 24px;min-height:calc(100vh - var(--tgv-top) - var(--tgv-nav));display:flex;align-items:center;scroll-margin-top:calc(var(--tgv-top) + var(--tgv-nav))}
-.s3:where(.svtg-thx26,.svtg-thx26 *) .btn svg,.s4stub:where(.svtg-thx26,.svtg-thx26 *) .btn svg,.bpbtns:where(.svtg-thx26,.svtg-thx26 *) .btn svg{width:18px;height:18px;flex:none}
+.s3:where(.svtg-thx26,.svtg-thx26 *) .btn svg, .s4stub:where(.svtg-thx26,.svtg-thx26 *) .btn svg, .bpbtns:where(.svtg-thx26,.svtg-thx26 *) .btn svg{width:18px;height:18px;flex:none}
 .s3wrap:where(.svtg-thx26,.svtg-thx26 *){width:min(var(--tgv-wrap),100%);margin:0 auto;padding:0 32px}
 .s3head:where(.svtg-thx26,.svtg-thx26 *){text-align:center;display:flex;flex-direction:column;gap:10px;align-items:center;margin-bottom:14px}
 .s3head:where(.svtg-thx26,.svtg-thx26 *) h2{margin:0;font-family:var(--tgv-disp);font-weight:700;font-size:clamp(30px,3vw,46px);line-height:1.08;letter-spacing:-.012em;color:#000}
@@ -172,25 +172,25 @@ button:where(.svtg-thx26,.svtg-thx26 *){font:inherit}
 .m3:where(.svtg-thx26,.svtg-thx26 *) .roller{transform-box:view-box}
 .st-processing:where(.svtg-thx26,.svtg-thx26 *) .m3 .gear{animation:tgk-spin 1.2s linear infinite}
 .st-processing:where(.svtg-thx26,.svtg-thx26 *) .m3 .gear.rev{animation-direction:reverse}
-.st-processing:where(.svtg-thx26,.svtg-thx26 *) .m3 .roller,.st-delivering:where(.svtg-thx26,.svtg-thx26 *) .m3 .roller{animation:tgk-spin .7s linear infinite}
+.st-processing:where(.svtg-thx26,.svtg-thx26 *) .m3 .roller, .st-delivering:where(.svtg-thx26,.svtg-thx26 *) .m3 .roller{animation:tgk-spin .7s linear infinite}
 @keyframes tgk-spin{to{transform:rotate(360deg)}}
 .m3:where(.svtg-thx26,.svtg-thx26 *) .belt{animation:tgk-belt 1s linear infinite;animation-play-state:paused}
 .st-processing:where(.svtg-thx26,.svtg-thx26 *) .m3 .belt{animation-play-state:running}
 @keyframes tgk-belt{to{stroke-dashoffset:-48}}
 .m3:where(.svtg-thx26,.svtg-thx26 *) .sign{opacity:0;transition:opacity .35s}
-.st-standby:where(.svtg-thx26,.svtg-thx26 *) .s-standby,.st-delivering:where(.svtg-thx26,.svtg-thx26 *) .s-standby,.st-ready:where(.svtg-thx26,.svtg-thx26 *) .s-ready,.st-form:where(.svtg-thx26,.svtg-thx26 *) .s-ready,.st-processing:where(.svtg-thx26,.svtg-thx26 *) .s-processing,.st-done:where(.svtg-thx26,.svtg-thx26 *) .s-done{opacity:1}
+.st-standby:where(.svtg-thx26,.svtg-thx26 *) .s-standby, .st-delivering:where(.svtg-thx26,.svtg-thx26 *) .s-standby, .st-ready:where(.svtg-thx26,.svtg-thx26 *) .s-ready, .st-form:where(.svtg-thx26,.svtg-thx26 *) .s-ready, .st-processing:where(.svtg-thx26,.svtg-thx26 *) .s-processing, .st-done:where(.svtg-thx26,.svtg-thx26 *) .s-done{opacity:1}
 .m3:where(.svtg-thx26,.svtg-thx26 *) .lamp{transition:fill .3s}
-.st-ready:where(.svtg-thx26,.svtg-thx26 *) .m3 .lamp,.st-form:where(.svtg-thx26,.svtg-thx26 *) .m3 .lamp,.st-done:where(.svtg-thx26,.svtg-thx26 *) .m3 .lamp{fill:#FD6523}
-.st-ready:where(.svtg-thx26,.svtg-thx26 *) .m3 .lampglow,.st-form:where(.svtg-thx26,.svtg-thx26 *) .m3 .lampglow,.st-done:where(.svtg-thx26,.svtg-thx26 *) .m3 .lampglow{animation:tgk-glow 1.8s ease-in-out infinite}
+.st-ready:where(.svtg-thx26,.svtg-thx26 *) .m3 .lamp, .st-form:where(.svtg-thx26,.svtg-thx26 *) .m3 .lamp, .st-done:where(.svtg-thx26,.svtg-thx26 *) .m3 .lamp{fill:#FD6523}
+.st-ready:where(.svtg-thx26,.svtg-thx26 *) .m3 .lampglow, .st-form:where(.svtg-thx26,.svtg-thx26 *) .m3 .lampglow, .st-done:where(.svtg-thx26,.svtg-thx26 *) .m3 .lampglow{animation:tgk-glow 1.8s ease-in-out infinite}
 .st-processing:where(.svtg-thx26,.svtg-thx26 *) .m3 .lamp{animation:tgk-blinkL .3s steps(2) infinite}
 @keyframes tgk-glow{0%,100%{opacity:.15}50%{opacity:.4}}
 @keyframes tgk-blinkL{50%{fill:#FFB36B}}
 .m3:where(.svtg-thx26,.svtg-thx26 *) .mouthglow{transition:opacity .4s}
 .gulp:where(.svtg-thx26,.svtg-thx26 *) .m3 .mouthglow{opacity:.55}
 .m3:where(.svtg-thx26,.svtg-thx26 *) .shutter{transition:transform 1s cubic-bezier(.6,0,.3,1)}
-.st-done:where(.svtg-thx26,.svtg-thx26 *) .m3 .shutter,.opening:where(.svtg-thx26,.svtg-thx26 *) .m3 .shutter{transform:translateY(-150px)}
+.st-done:where(.svtg-thx26,.svtg-thx26 *) .m3 .shutter, .opening:where(.svtg-thx26,.svtg-thx26 *) .m3 .shutter{transform:translateY(-150px)}
 .m3:where(.svtg-thx26,.svtg-thx26 *) .roll{transform:translateX(-60px);opacity:0;transition:transform .9s ease-out,opacity .3s}
-.st-done:where(.svtg-thx26,.svtg-thx26 *) .m3 .roll,.opening:where(.svtg-thx26,.svtg-thx26 *) .m3 .roll{transform:none;opacity:1}
+.st-done:where(.svtg-thx26,.svtg-thx26 *) .m3 .roll, .opening:where(.svtg-thx26,.svtg-thx26 *) .m3 .roll{transform:none;opacity:1}
 .m3:where(.svtg-thx26,.svtg-thx26 *) .traveler{opacity:0}
 .st-processing:where(.svtg-thx26,.svtg-thx26 *) .m3 .traveler{animation:tgk-travel 3.4s 1.2s ease-in-out forwards}
 @keyframes tgk-travel{0%{opacity:1;transform:translateX(0)}90%{opacity:1;transform:translateX(640px)}100%{opacity:0;transform:translateX(660px)}}
@@ -200,12 +200,12 @@ button:where(.svtg-thx26,.svtg-thx26 *){font:inherit}
 .m3tom.in:where(.svtg-thx26,.svtg-thx26 *){transform:translateX(0)}
 .m3tom:where(.svtg-thx26,.svtg-thx26 *) .tw{position:absolute;inset:0;opacity:0;transition:opacity .25s}
 .m3tom:where(.svtg-thx26,.svtg-thx26 *) .tw svg{width:100%;height:100%;display:block}
-.m3tom:where(.svtg-thx26,.svtg-thx26 *) .tw.idle,.m3tom:where(.svtg-thx26,.svtg-thx26 *) .tw.yay{left:4%;width:86%}
-.st-standby:where(.svtg-thx26,.svtg-thx26 *) .m3tom .walk,.st-delivering:where(.svtg-thx26,.svtg-thx26 *) .m3tom .walk{opacity:1}
-.st-ready:where(.svtg-thx26,.svtg-thx26 *) .m3tom .idle,.st-form:where(.svtg-thx26,.svtg-thx26 *) .m3tom .idle,.st-processing:where(.svtg-thx26,.svtg-thx26 *) .m3tom .idle{opacity:1}
+.m3tom:where(.svtg-thx26,.svtg-thx26 *) .tw.idle, .m3tom:where(.svtg-thx26,.svtg-thx26 *) .tw.yay{left:4%;width:86%}
+.st-standby:where(.svtg-thx26,.svtg-thx26 *) .m3tom .walk, .st-delivering:where(.svtg-thx26,.svtg-thx26 *) .m3tom .walk{opacity:1}
+.st-ready:where(.svtg-thx26,.svtg-thx26 *) .m3tom .idle, .st-form:where(.svtg-thx26,.svtg-thx26 *) .m3tom .idle, .st-processing:where(.svtg-thx26,.svtg-thx26 *) .m3tom .idle{opacity:1}
 .st-done:where(.svtg-thx26,.svtg-thx26 *) .m3tom .yay{opacity:1}
 .m3tom:where(.svtg-thx26,.svtg-thx26 *) .carry{position:absolute;left:50%;top:38%;width:58%;z-index:2;transform:rotate(-4deg)}
-.m3tom:where(.svtg-thx26,.svtg-thx26 *) .carry svg.pile,.pile:where(.svtg-thx26,.svtg-thx26 *){width:100%;height:auto;display:block}
+.m3tom:where(.svtg-thx26,.svtg-thx26 *) .carry svg.pile, .pile:where(.svtg-thx26,.svtg-thx26 *){width:100%;height:auto;display:block}
 .m3tom:where(.svtg-thx26,.svtg-thx26 *) .walk:not(.going) .tp g{animation-play-state:paused}
 .flypile:where(.svtg-thx26,.svtg-thx26 *){position:absolute;width:10.6%;left:10%;top:52%;opacity:0;pointer-events:none}
 .flypile.go:where(.svtg-thx26,.svtg-thx26 *){animation:tgk-toss 1s cubic-bezier(.5,-.3,.7,1) forwards}
@@ -216,7 +216,7 @@ button:where(.svtg-thx26,.svtg-thx26 *){font:inherit}
 .m3screen:where(.svtg-thx26,.svtg-thx26 *){position:absolute;left:39.2%;top:20.9%;width:29.7%;height:68.8%;border:0;padding:0;background:transparent;border-radius:1.3cqw;cursor:default}
 .st-ready:where(.svtg-thx26,.svtg-thx26 *) .m3screen{cursor:pointer}
 .sv:where(.svtg-thx26,.svtg-thx26 *){position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .4s}
-.st-standby:where(.svtg-thx26,.svtg-thx26 *) .sv-standby,.st-delivering:where(.svtg-thx26,.svtg-thx26 *) .sv-standby,.st-ready:where(.svtg-thx26,.svtg-thx26 *) .sv-ready,.st-form:where(.svtg-thx26,.svtg-thx26 *) .sv-ready,.st-processing:where(.svtg-thx26,.svtg-thx26 *) .sv-processing{opacity:1}
+.st-standby:where(.svtg-thx26,.svtg-thx26 *) .sv-standby, .st-delivering:where(.svtg-thx26,.svtg-thx26 *) .sv-standby, .st-ready:where(.svtg-thx26,.svtg-thx26 *) .sv-ready, .st-form:where(.svtg-thx26,.svtg-thx26 *) .sv-ready, .st-processing:where(.svtg-thx26,.svtg-thx26 *) .sv-processing{opacity:1}
 .dots:where(.svtg-thx26,.svtg-thx26 *){display:flex;gap:8px}
 .dots:where(.svtg-thx26,.svtg-thx26 *) i{width:9px;height:9px;border-radius:50%;background:#F4DCCB;animation:tgk-dot 1.2s ease-in-out infinite}
 .dots:where(.svtg-thx26,.svtg-thx26 *) i:nth-child(2){animation-delay:.2s}
@@ -254,8 +254,8 @@ button:where(.svtg-thx26,.svtg-thx26 *){font:inherit}
 .aform:where(.svtg-thx26,.svtg-thx26 *) .fsub{margin:0 0 6px;color:rgba(0,0,0,.6);line-height:1.45}
 .aform:where(.svtg-thx26,.svtg-thx26 *) label{font-weight:600;margin-top:8px}
 .aform:where(.svtg-thx26,.svtg-thx26 *) label b{color:#B00000;font-weight:600}
-.aform:where(.svtg-thx26,.svtg-thx26 *) input[type=text],.aform:where(.svtg-thx26,.svtg-thx26 *) input[type=email],.aform:where(.svtg-thx26,.svtg-thx26 *) select{width:100%;box-sizing:border-box;font:inherit;font-size:16px;padding:10px 12px;border-radius:10px;border:1px solid #EBCDBB;background:#fff;color:#000}
-.aform:where(.svtg-thx26,.svtg-thx26 *) input:focus,.aform:where(.svtg-thx26,.svtg-thx26 *) select:focus{outline:2px solid #FD6523;outline-offset:1px}
+.aform:where(.svtg-thx26,.svtg-thx26 *) input[type=text], .aform:where(.svtg-thx26,.svtg-thx26 *) input[type=email], .aform:where(.svtg-thx26,.svtg-thx26 *) select{width:100%;box-sizing:border-box;font:inherit;font-size:16px;padding:10px 12px;border-radius:10px;border:1px solid #EBCDBB;background:#fff;color:#000}
+.aform:where(.svtg-thx26,.svtg-thx26 *) input:focus, .aform:where(.svtg-thx26,.svtg-thx26 *) select:focus{outline:2px solid #FD6523;outline-offset:1px}
 .aform:where(.svtg-thx26,.svtg-thx26 *) input[type=range]{width:100%;accent-color:#B00000}
 .aform:where(.svtg-thx26,.svtg-thx26 *) .btn{margin-top:14px;align-self:flex-start}
 .aform:where(.svtg-thx26,.svtg-thx26 *) .fnote{margin:8px 0 0;font-size:12px;color:rgba(0,0,0,.5);line-height:1.45}
@@ -288,7 +288,7 @@ button:where(.svtg-thx26,.svtg-thx26 *){font:inherit}
 .tg-modal:where(.svtg-thx26,.svtg-thx26 *){z-index:1000}
 .tg-sheet:where(.svtg-thx26,.svtg-thx26 *){width:min(720px,100%);max-height:calc(100vh - 32px);max-height:calc(100dvh - 32px)}
 .aform:where(.svtg-thx26,.svtg-thx26 *){display:grid;grid-template-columns:1fr 1fr;gap:14px 18px;padding:28px 30px 24px}
-.aform:where(.svtg-thx26,.svtg-thx26 *)>.ftitle,.aform:where(.svtg-thx26,.svtg-thx26 *)>.fsub,.aform:where(.svtg-thx26,.svtg-thx26 *)>.ferr,.aform:where(.svtg-thx26,.svtg-thx26 *)>.btn,.aform:where(.svtg-thx26,.svtg-thx26 *)>.fnote,.ff-q1:where(.svtg-thx26,.svtg-thx26 *),.ff-q4:where(.svtg-thx26,.svtg-thx26 *){grid-column:1/-1}
+.aform:where(.svtg-thx26,.svtg-thx26 *)>.ftitle, .aform:where(.svtg-thx26,.svtg-thx26 *)>.fsub, .aform:where(.svtg-thx26,.svtg-thx26 *)>.ferr, .aform:where(.svtg-thx26,.svtg-thx26 *)>.btn, .aform:where(.svtg-thx26,.svtg-thx26 *)>.fnote, .ff-q1:where(.svtg-thx26,.svtg-thx26 *), .ff-q4:where(.svtg-thx26,.svtg-thx26 *){grid-column:1/-1}
 .aform:where(.svtg-thx26,.svtg-thx26 *) .fsub{margin:-8px 0 0}
 .ff:where(.svtg-thx26,.svtg-thx26 *){display:flex;flex-direction:column;gap:6px;min-width:0}
 .ff:where(.svtg-thx26,.svtg-thx26 *) label{margin-top:0}
@@ -333,7 +333,7 @@ button:where(.svtg-thx26,.svtg-thx26 *){font:inherit}
 .s3:where(.svtg-thx26,.svtg-thx26 *) .m3tom::before{background:rgba(160,60,30,.10)}
 .st-missed:where(.svtg-thx26,.svtg-thx26 *) .m3tom .idle{opacity:1}
 .s3:where(.svtg-thx26,.svtg-thx26 *){background:linear-gradient(180deg,#FCE3D6 0%,#FFF7F2 12.5%,#FFF5EF 58.3%,#FDEBE1 58.3%,#FDEBE1 92.5%,#FFF2EA 92.5%,#FFF2EA 100%)!important}
-.s3:where(.svtg-thx26,.svtg-thx26 *) .m3stage::before,.s3:where(.svtg-thx26,.svtg-thx26 *) .m3stage::after{display:none!important}
+.s3:where(.svtg-thx26,.svtg-thx26 *) .m3stage::before, .s3:where(.svtg-thx26,.svtg-thx26 *) .m3stage::after{display:none!important}
 .s3:where(.svtg-thx26,.svtg-thx26 *) .s3fit{padding-bottom:var(--s3pb,7.5vh)}
 @media (max-width:760px){.s3:where(.svtg-thx26,.svtg-thx26 *){background:linear-gradient(180deg,#FCE3D6 0,#FFF7F2 120px,#FFF5EF 100%)!important}
 .s3:where(.svtg-thx26,.svtg-thx26 *) .s3fit{padding-bottom:40px}}
@@ -382,49 +382,18 @@ button:where(.svtg-thx26,.svtg-thx26 *){font:inherit}
 @media (max-width:860px){.t4grid:where(.svtg-thx26,.svtg-thx26 *){grid-template-columns:minmax(0,1fr)}
 .t4card:where(.svtg-thx26,.svtg-thx26 *){padding:22px}}
 .tl:where(.svtg-thx26,.svtg-thx26 *){position:relative;background:#FEF1EA;overflow:hidden}
-.tl-vp:where(.svtg-thx26,.svtg-thx26 *){position:relative;width:100%;aspect-ratio:1600/600;max-height:72vh;overflow:hidden;margin:0 auto}
-.tl-strip:where(.svtg-thx26,.svtg-thx26 *){position:absolute;left:0;right:0;top:0;transition:transform 1s cubic-bezier(.6,0,.3,1)}
-.tl-floor:where(.svtg-thx26,.svtg-thx26 *){position:relative;width:100%;aspect-ratio:1600/600}
-.tl-img:where(.svtg-thx26,.svtg-thx26 *){position:absolute;inset:0;width:100%;height:100%;display:block}
-.tl-slab:where(.svtg-thx26,.svtg-thx26 *){height:clamp(18px,2.4vw,34px);background:#F2B59A;box-shadow:inset 0 -6px 0 #E9A586}
-.s5strip:where(.svtg-thx26,.svtg-thx26 *) .tl-slab{background:linear-gradient(180deg,#F2B59A 0,#E9A586 28px,#FEF1EA 28px,#FEF1EA 100%);box-shadow:none}
-.tl-lift:where(.svtg-thx26,.svtg-thx26 *){position:absolute;left:36.875%;width:7.5%;top:50%;height:35.67%}
-.tl-lift:where(.svtg-thx26,.svtg-thx26 *) .tl-clip{position:absolute;inset:0;overflow:hidden}
-.tl-car:where(.svtg-thx26,.svtg-thx26 *){position:absolute;inset:0;background:#DCE3F7;z-index:1}
-.tl-d:where(.svtg-thx26,.svtg-thx26 *){position:absolute;top:0;bottom:0;width:50%;z-index:3;background:linear-gradient(90deg,#CBD6F5,#F6F3F6);transition:transform .45s cubic-bezier(.6,0,.3,1)}
 .tl-d.l:where(.svtg-thx26,.svtg-thx26 *){left:0;border-right:1px solid #F4C2A9}
 .tl-d.r:where(.svtg-thx26,.svtg-thx26 *){right:0;border-left:1px solid #F4C2A9}
 .tl-lift.open:where(.svtg-thx26,.svtg-thx26 *) .tl-d.l{transform:translateX(-100%)}
 .tl-lift.open:where(.svtg-thx26,.svtg-thx26 *) .tl-d.r{transform:translateX(100%)}
-.tl-lift:where(.svtg-thx26,.svtg-thx26 *) .tl-d{clip-path:inset(0)}
-.tl-disp:where(.svtg-thx26,.svtg-thx26 *){position:absolute;left:50%;top:-24%;transform:translateX(-50%);display:flex;align-items:center;gap:4px;padding:3px 8px;border-radius:5px;background:#9E2A12;color:#FDB89A;font-family:var(--tgv-disp);font-weight:700;font-size:clamp(10px,1vw,15px);z-index:4;white-space:nowrap}
-.tl-disp:where(.svtg-thx26,.svtg-thx26 *) svg{width:1em;height:1em}
 .moving:where(.svtg-thx26,.svtg-thx26 *) .tl-disp svg{animation:tgk-tlb .3s steps(2) infinite}
 @keyframes tgk-tlb{50%{opacity:.2}}
-.tl-a:where(.svtg-thx26,.svtg-thx26 *) .tl-d{transition-duration:.4s}
-.tl-tom:where(.svtg-thx26,.svtg-thx26 *){position:absolute;z-index:2;width:9.5%;aspect-ratio:423/540;left:16%;bottom:13.5%;transition:left .9s linear,opacity .2s}
-.tl-tom:where(.svtg-thx26,.svtg-thx26 *) svg{width:100%;height:100%;display:block}
 .tl-tom:where(.svtg-thx26,.svtg-thx26 *) .s{position:absolute;inset:0;opacity:0}
 .tl-tom.idle:where(.svtg-thx26,.svtg-thx26 *) .w{opacity:0}
 .tl-tom.idle:where(.svtg-thx26,.svtg-thx26 *) .s{opacity:1}
 .tl-tom:where(.svtg-thx26,.svtg-thx26 *) .w .tp g{animation-play-state:paused}
 .tl-tom.walking:where(.svtg-thx26,.svtg-thx26 *) .w .tp g{animation-play-state:running}
 .tl-tom.inside:where(.svtg-thx26,.svtg-thx26 *){z-index:1}
-.s5:where(.svtg-thx26,.svtg-thx26 *){padding:0;background:#FEF1EA}
-.s5vp:where(.svtg-thx26,.svtg-thx26 *){position:relative;display:flex;flex-direction:column;box-sizing:border-box;height:calc(100vh - var(--tgv-top) - var(--tgv-nav));height:calc(100dvh - var(--tgv-top) - var(--tgv-nav));min-height:600px;max-height:1100px;overflow:hidden;background:#FEF1EA;padding-top:clamp(24px,4vh,44px)}
-.s5head:where(.svtg-thx26,.svtg-thx26 *){flex:none;margin:0 auto 8px;padding:0 20px;position:relative;z-index:2}
-.s5scene:where(.svtg-thx26,.svtg-thx26 *){position:relative;flex:1;min-height:0;overflow:hidden}
-.s5strip:where(.svtg-thx26,.svtg-thx26 *){position:absolute;left:0;right:0;top:0;transition:transform 1s cubic-bezier(.6,0,.3,1);will-change:transform}
-.s5floor:where(.svtg-thx26,.svtg-thx26 *){position:relative;overflow:hidden;background:linear-gradient(0deg,#FCE3D6 0,#FCE3D6 var(--fb,80px),#F7C9B3 var(--fb,80px),#F7C9B3 calc(var(--fb,80px) + 4px),#FEF1EA calc(var(--fb,80px) + 4px))}
-.s5art:where(.svtg-thx26,.svtg-thx26 *){position:absolute;bottom:0;left:0;width:1600px;height:600px}
-.s5art:where(.svtg-thx26,.svtg-thx26 *) .tl-img{position:absolute;inset:0;width:100%;height:100%;display:block}
-.s5strip:where(.svtg-thx26,.svtg-thx26 *) .tl-slab{height:30px;background:linear-gradient(180deg,#F2B59A 0,#E9A586 100%);box-shadow:none}
-.tl-clip:where(.svtg-thx26,.svtg-thx26 *) .tl-car{z-index:1}
-.tl-clip:where(.svtg-thx26,.svtg-thx26 *) .tl-d{z-index:3}
-.s5floor:where(.svtg-thx26,.svtg-thx26 *) .tl-lift{z-index:auto}
-.s5tom:where(.svtg-thx26,.svtg-thx26 *){position:absolute;bottom:13.4%;width:9.4%;aspect-ratio:423/540;z-index:5;transform:translateX(-50%);transform-origin:50% 100%}
-.s5tom:where(.svtg-thx26,.svtg-thx26 *)>div{position:absolute;inset:0;opacity:0;transition:opacity .15s}
-.s5tom:where(.svtg-thx26,.svtg-thx26 *) svg{width:100%;height:100%;display:block}
 .s5tom:where(.svtg-thx26,.svtg-thx26 *) .tp g{animation-play-state:paused}
 .s5tom.walking:where(.svtg-thx26,.svtg-thx26 *) .tp g{animation-play-state:running}
 .s5tom.a:where(.svtg-thx26,.svtg-thx26 *){left:20.6%;transition:left 1s linear}
@@ -437,77 +406,28 @@ button:where(.svtg-thx26,.svtg-thx26 *){font:inherit}
 .s5tom.b.flip:where(.svtg-thx26,.svtg-thx26 *) .w{transform:scaleX(-1)}
 .s5tom.b.inside:where(.svtg-thx26,.svtg-thx26 *){z-index:2;transform:translateX(-50%) translateY(-3%) scale(.86)}
 .s5tom.b.out:where(.svtg-thx26,.svtg-thx26 *){transition:transform .5s cubic-bezier(.3,1.3,.5,1),opacity .2s}
-.g5:where(.svtg-thx26,.svtg-thx26 *){position:absolute;bottom:12.8%;width:9.4%;transform:translateX(-50%);border:0;background:none;padding:0;cursor:pointer;opacity:0;visibility:hidden;transition:opacity .5s,visibility 0s .5s;z-index:4;color:inherit;font:inherit}
 .arrived:where(.svtg-thx26,.svtg-thx26 *) .g5{opacity:1;visibility:visible;transition:opacity .6s .15s}
 .arrived:where(.svtg-thx26,.svtg-thx26 *) #g2{transition-delay:.3s}
-.g5-art:where(.svtg-thx26,.svtg-thx26 *){position:relative;display:block;width:100%;aspect-ratio:170/230;transition:transform .3s cubic-bezier(.3,1.4,.5,1)}
-.g5-svg:where(.svtg-thx26,.svtg-thx26 *){position:absolute;inset:0;width:100%;height:100%;overflow:visible}
-.g5:hover:where(.svtg-thx26,.svtg-thx26 *) .g5-art,.g5:focus-visible:where(.svtg-thx26,.svtg-thx26 *) .g5-art{transform:translateY(-5px)}
-.g5:focus-visible:where(.svtg-thx26,.svtg-thx26 *){outline:none}
-.g5:focus-visible:where(.svtg-thx26,.svtg-thx26 *) .g5-tag{outline:3px solid #6890EA;outline-offset:3px}
 .g5:where(.svtg-thx26,.svtg-thx26 *) .lid{transform-box:fill-box;transform-origin:0% 100%;transition:transform .5s cubic-bezier(.3,1.5,.5,1)}
 .g5.opened:where(.svtg-thx26,.svtg-thx26 *) .lid{transform:translate(-12%,-150%) rotate(-24deg)}
 .g5:where(.svtg-thx26,.svtg-thx26 *) .mouth{transition:opacity .2s}
 .g5.opened:where(.svtg-thx26,.svtg-thx26 *) .mouth{opacity:.55}
-.g5-tag:where(.svtg-thx26,.svtg-thx26 *){position:absolute;left:50%;bottom:calc(68% + 26px);transform:translateX(-50%);width:clamp(138px,12.5vw,210px);box-sizing:border-box;padding:12px 14px 13px;border-radius:14px;background:#fff;box-shadow:0 1px 0 rgba(176,0,0,.06),0 14px 28px -16px rgba(94,18,18,.45);display:flex;flex-direction:column;gap:4px;text-align:center;transition:transform .3s,box-shadow .3s}
-.g5-tag:where(.svtg-thx26,.svtg-thx26 *)::after{content:"";position:absolute;left:50%;top:100%;width:2px;height:26px;margin-left:-1px;background:linear-gradient(#E9A586,#E9A586)}
-.g5-tag:where(.svtg-thx26,.svtg-thx26 *)::before{content:"";position:absolute;left:50%;top:100%;margin:22px 0 0 -4px;width:8px;height:8px;border-radius:50%;background:#E9A586}
 .g5-tag:where(.svtg-thx26,.svtg-thx26 *) .tg-label{color:#B00000;font-size:11px;letter-spacing:.14em}
-.g5-tt:where(.svtg-thx26,.svtg-thx26 *){font-family:var(--tgv-disp);font-weight:700;font-size:clamp(13px,1.05vw,16px);line-height:1.25;color:#000}
-.g5:hover:where(.svtg-thx26,.svtg-thx26 *) .g5-tag{transform:translateX(-50%) translateY(-3px);box-shadow:0 1px 0 rgba(176,0,0,.06),0 18px 32px -14px rgba(94,18,18,.5)}
-.has-open:where(.svtg-thx26,.svtg-thx26 *) .g5:not(.opened) .g5-tag,.picking:where(.svtg-thx26,.svtg-thx26 *) .g5:not(.picked) .g5-tag{opacity:.5}
-.g5-art:where(.svtg-thx26,.svtg-thx26 *){container-type:inline-size}
-.g5-rays:where(.svtg-thx26,.svtg-thx26 *){position:absolute;left:50%;top:36%;width:210%;aspect-ratio:1;transform:translate(-50%,-50%) scale(0);opacity:0;pointer-events:none;-webkit-mask:radial-gradient(closest-side,#000 25%,transparent 100%);mask:radial-gradient(closest-side,#000 25%,transparent 100%);transition:transform .6s cubic-bezier(.3,1.4,.5,1),opacity .3s}
-.g5-rays:where(.svtg-thx26,.svtg-thx26 *)::before{content:"";position:absolute;inset:0;border-radius:50%;background:repeating-conic-gradient(from 0deg,rgba(253,177,62,.55) 0 9deg,rgba(253,177,62,0) 9deg 24deg)}
+.has-open:where(.svtg-thx26,.svtg-thx26 *) .g5:not(.opened) .g5-tag, .picking:where(.svtg-thx26,.svtg-thx26 *) .g5:not(.picked) .g5-tag{opacity:.5}
 .g5.opened:where(.svtg-thx26,.svtg-thx26 *) .g5-rays{transform:translate(-50%,-50%) scale(1);opacity:1}
 .g5.opened:where(.svtg-thx26,.svtg-thx26 *) .g5-rays::before{animation:tgk-spin 9s linear infinite}
 @keyframes tgk-spin{to{transform:rotate(360deg)}}
-.g5-tag:where(.svtg-thx26,.svtg-thx26 *){transition:transform .3s,box-shadow .3s,opacity .3s}
 .g5.opened:where(.svtg-thx26,.svtg-thx26 *) .g5-tag{opacity:0!important}
-.g5-in:where(.svtg-thx26,.svtg-thx26 *){position:absolute;left:18%;width:64%;top:30%;opacity:0;transform:translateY(20%) scale(.5);transition:transform .7s .15s cubic-bezier(.3,1.5,.5,1),opacity .25s .15s}
-.g5-in:where(.svtg-thx26,.svtg-thx26 *) svg{display:block;width:100%;height:auto}
 .g5.opened:where(.svtg-thx26,.svtg-thx26 *) .g5-in{opacity:1;transform:translateY(-62%) scale(1)}
-.g5-cf:where(.svtg-thx26,.svtg-thx26 *){position:absolute;left:50%;top:40%;width:0;height:0;pointer-events:none;z-index:3}
-.g5-cf:where(.svtg-thx26,.svtg-thx26 *) i{position:absolute;left:0;top:0;border-radius:2px;background:var(--c);opacity:0}
 .g5.opened:where(.svtg-thx26,.svtg-thx26 *) .g5-cf i{animation:tgk-cf 1.1s var(--d) cubic-bezier(.2,.7,.4,1) forwards}
 @keyframes tgk-cf{0%{opacity:1;transform:translate(-50%,0) rotate(0)}70%{opacity:1}100%{opacity:0;transform:translate(calc(-50% + var(--x)),calc(var(--y) + 30cqw)) rotate(var(--r))}}
-.s5dim:where(.svtg-thx26,.svtg-thx26 *){position:absolute;inset:0;z-index:20;background:rgba(40,10,6,.55);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);opacity:0;pointer-events:none;transition:opacity .45s}
 .s5dim.show:where(.svtg-thx26,.svtg-thx26 *){opacity:1;pointer-events:auto}
-.c5:where(.svtg-thx26,.svtg-thx26 *){position:absolute;z-index:21;left:50%;top:50%;width:min(680px,calc(100% - 32px));box-sizing:border-box;display:grid;grid-template-columns:220px 1fr;border-radius:22px;overflow:hidden;background:#fff;box-shadow:0 40px 90px -30px rgba(30,6,4,.6);opacity:0;transform:translate(-50%,-46%) scale(.94);transition:opacity .35s,transform .45s cubic-bezier(.2,1.2,.4,1)}
-.c5[hidden]:where(.svtg-thx26,.svtg-thx26 *){display:none}
 .c5.show:where(.svtg-thx26,.svtg-thx26 *){opacity:1;transform:translate(-50%,-50%) scale(1)}
-.c5-vis:where(.svtg-thx26,.svtg-thx26 *){background:radial-gradient(circle at 50% 45%,#FFE6D6 0,#FCD3BE 70%);display:flex;align-items:center;justify-content:center;padding:28px}
-.c5-vis:where(.svtg-thx26,.svtg-thx26 *) svg{width:100%;max-width:150px;height:auto;display:block}
-.c5-body:where(.svtg-thx26,.svtg-thx26 *){padding:32px 32px 30px;display:flex;flex-direction:column;align-items:flex-start;gap:10px}
 .c5:where(.svtg-thx26,.svtg-thx26 *) .tg-label{color:#B00000}
-.c5-t:where(.svtg-thx26,.svtg-thx26 *){margin:0;font-family:var(--tgv-disp);font-weight:700;font-size:clamp(22px,2vw,28px);line-height:1.2;color:#000;padding-right:28px}
-.c5-p:where(.svtg-thx26,.svtg-thx26 *){margin:0 0 8px;font-size:16px;line-height:1.55;color:rgba(0,0,0,.7)}
-.c5-cta:where(.svtg-thx26,.svtg-thx26 *){height:52px;padding:0 28px;font-size:16px}
-.c5x:where(.svtg-thx26,.svtg-thx26 *){position:absolute;top:14px;right:14px;width:36px;height:36px;border-radius:50%;border:0;background:#FBEFE6;color:#000;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2;transition:background .2s}
-.c5x:hover:where(.svtg-thx26,.svtg-thx26 *){background:#F7DCCB}
-.c5x:where(.svtg-thx26,.svtg-thx26 *) svg{width:18px;height:18px}
-@media (max-width:760px){.s5vp:where(.svtg-thx26,.svtg-thx26 *){height:auto;min-height:560px;max-height:none;padding-top:40px}
-.s5scene:where(.svtg-thx26,.svtg-thx26 *){flex:1 0 auto;height:calc(100vw * .8)}
-.c5:where(.svtg-thx26,.svtg-thx26 *){grid-template-columns:1fr}
-.c5-vis:where(.svtg-thx26,.svtg-thx26 *){padding:20px}
-.c5-vis:where(.svtg-thx26,.svtg-thx26 *) svg{max-width:96px}
-.c5-body:where(.svtg-thx26,.svtg-thx26 *){padding:22px 22px 24px}
-.c5-cta:where(.svtg-thx26,.svtg-thx26 *){width:100%}
-.g5-tag:where(.svtg-thx26,.svtg-thx26 *){width:112px;padding:8px 6px 9px;border-radius:10px;bottom:calc(68% + 16px);gap:2px}
-.g5-tag:where(.svtg-thx26,.svtg-thx26 *)::after{height:16px}
-.g5-tag:where(.svtg-thx26,.svtg-thx26 *)::before{margin-top:12px}
-.g5-tag:where(.svtg-thx26,.svtg-thx26 *) .tg-label{font-size:10px}
-.g5-tt:where(.svtg-thx26,.svtg-thx26 *){font-size:11.5px}}
+@media (max-width:760px){
+.g5-tag:where(.svtg-thx26,.svtg-thx26 *) .tg-label{font-size:10px}}
 @media (prefers-reduced-motion:reduce){.g5.opened:where(.svtg-thx26,.svtg-thx26 *) .g5-rays{animation:none}
 .g5.opened:where(.svtg-thx26,.svtg-thx26 *) .g5-cf i{animation:none}}
-.s5vp:where(.svtg-thx26,.svtg-thx26 *){padding-top:0}
-.s5head:where(.svtg-thx26,.svtg-thx26 *){position:absolute;left:0;right:0;top:clamp(24px,4vh,44px);margin:0 auto;z-index:6;pointer-events:none}
-.s5scene:where(.svtg-thx26,.svtg-thx26 *){position:absolute;inset:0}
-.s5floor:where(.svtg-thx26,.svtg-thx26 *){background:#FEF1EA}
-.s5art:where(.svtg-thx26,.svtg-thx26 *) .tl-img{top:auto;bottom:0;height:216.6667%}
-.s5strip:where(.svtg-thx26,.svtg-thx26 *) .tl-slab{background:linear-gradient(180deg,#F2B59A,#E9A586)}
-@media (max-width:760px){.s5vp:where(.svtg-thx26,.svtg-thx26 *){height:auto;padding-top:0}
-.s5scene:where(.svtg-thx26,.svtg-thx26 *){flex:none;height:auto}}
 .s6:where(.svtg-thx26,.svtg-thx26 *){background:linear-gradient(180deg,#FCE3D6 0,rgba(255,247,240,.0) 140px),var(--tg-doodle) 0 0/220px 220px repeat,#FFF8F2;position:relative}
 .s6:where(.svtg-thx26,.svtg-thx26 *)::before{content:"";position:absolute;inset:0;background:radial-gradient(70% 55% at 50% 45%,rgba(255,248,242,.96) 0,rgba(255,248,242,.86) 55%,rgba(255,240,228,.55) 100%);pointer-events:none}
 .s6:where(.svtg-thx26,.svtg-thx26 *)>.tg-wrap{position:relative}
@@ -525,8 +445,8 @@ button:where(.svtg-thx26,.svtg-thx26 *){font:inherit}
 .cs-panel:where(.svtg-thx26,.svtg-thx26 *){background:#FFFDFB;border:1px solid #F3DCCD;border-radius:22px;padding:26px;box-shadow:0 24px 50px -36px rgba(94,18,18,.45);display:flex;flex-direction:column;gap:16px;margin:0}
 .cs-f:where(.svtg-thx26,.svtg-thx26 *){display:flex;flex-direction:column;gap:8px}
 .cs-f:where(.svtg-thx26,.svtg-thx26 *) label{font-size:14px;font-weight:600}
-.cs-f:where(.svtg-thx26,.svtg-thx26 *) input,.cs-f:where(.svtg-thx26,.svtg-thx26 *) textarea{width:100%;box-sizing:border-box;font:inherit;font-size:16px;padding:12px 14px;border-radius:12px;border:1.5px solid #EBCDBB;background:#fff;color:#000;resize:none}
-.cs-f:where(.svtg-thx26,.svtg-thx26 *) input:focus,.cs-f:where(.svtg-thx26,.svtg-thx26 *) textarea:focus{outline:2px solid #FD6523;outline-offset:1px}
+.cs-f:where(.svtg-thx26,.svtg-thx26 *) input, .cs-f:where(.svtg-thx26,.svtg-thx26 *) textarea{width:100%;box-sizing:border-box;font:inherit;font-size:16px;padding:12px 14px;border-radius:12px;border:1.5px solid #EBCDBB;background:#fff;color:#000;resize:none}
+.cs-f:where(.svtg-thx26,.svtg-thx26 *) input:focus, .cs-f:where(.svtg-thx26,.svtg-thx26 *) textarea:focus{outline:2px solid #FD6523;outline-offset:1px}
 .cs-chips:where(.svtg-thx26,.svtg-thx26 *){display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:thin;scroll-snap-type:x proximity}
 .chip:where(.svtg-thx26,.svtg-thx26 *){flex:none;max-width:240px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;scroll-snap-align:start;border:1px solid #F3C9B2;background:#FFF3EC;color:#7A2A18;border-radius:999px;padding:7px 12px;font:inherit;font-size:13px;cursor:pointer;transition:background .2s}
 .chip:hover:where(.svtg-thx26,.svtg-thx26 *){background:#FDE3D3}
@@ -593,14 +513,14 @@ button:where(.svtg-thx26,.svtg-thx26 *){font:inherit}
 .w7card.new:where(.svtg-thx26,.svtg-thx26 *){animation:tgk-w7pop .6s cubic-bezier(.3,1.5,.5,1)}
 @keyframes tgk-w7pop{from{opacity:0;transform:translateY(-18px) scale(.85) rotate(-2deg)}}
 @media (max-width:860px){.w7wall:where(.svtg-thx26,.svtg-thx26 *){grid-template-columns:minmax(0,1fr);gap:16px}
-.w7form:where(.svtg-thx26,.svtg-thx26 *) .btn,#w7name:where(.svtg-thx26,.svtg-thx26 *),#w7text:where(.svtg-thx26,.svtg-thx26 *){flex:1 1 100%}}
+.w7form:where(.svtg-thx26,.svtg-thx26 *) .btn, #w7name:where(.svtg-thx26,.svtg-thx26 *), #w7text:where(.svtg-thx26,.svtg-thx26 *){flex:1 1 100%}}
 .s8:where(.svtg-thx26,.svtg-thx26 *){padding:0;background:#FEF1EA}
 .s8vp:where(.svtg-thx26,.svtg-thx26 *){position:relative;height:calc(100vh - var(--tgv-top) - var(--tgv-nav));height:calc(100dvh - var(--tgv-top) - var(--tgv-nav));min-height:620px;max-height:1100px;overflow:hidden;container-type:size;background:#FEF1EA;--fx:.5}
 .s8art:where(.svtg-thx26,.svtg-thx26 *){position:absolute;bottom:0;left:50%;width:max(100cqw,calc(100cqh * 1600 / 900));aspect-ratio:1600/900;transform:translateX(calc(var(--fx) * -100%))}
-.s8back:where(.svtg-thx26,.svtg-thx26 *),.s8front:where(.svtg-thx26,.svtg-thx26 *){position:absolute;inset:0;width:100%;height:100%;display:block}
+.s8back:where(.svtg-thx26,.svtg-thx26 *), .s8front:where(.svtg-thx26,.svtg-thx26 *){position:absolute;inset:0;width:100%;height:100%;display:block}
 .s8front:where(.svtg-thx26,.svtg-thx26 *){pointer-events:none}
 .t8:where(.svtg-thx26,.svtg-thx26 *){position:absolute;opacity:0}
-.t8:where(.svtg-thx26,.svtg-thx26 *) svg,.t8:where(.svtg-thx26,.svtg-thx26 *) img{width:100%;height:auto;display:block}
+.t8:where(.svtg-thx26,.svtg-thx26 *) svg, .t8:where(.svtg-thx26,.svtg-thx26 *) img{width:100%;height:auto;display:block}
 .t8.walk:where(.svtg-thx26,.svtg-thx26 *){width:9.375%;bottom:8.667%;left:-10%;transition:left 2.6s linear}
 .t8.walk:where(.svtg-thx26,.svtg-thx26 *) .tp g{animation-play-state:paused}
 .t8.walk.go:where(.svtg-thx26,.svtg-thx26 *) .tp g{animation-play-state:running}
@@ -615,7 +535,7 @@ button:where(.svtg-thx26,.svtg-thx26 *){font:inherit}
 .s8head:where(.svtg-thx26,.svtg-thx26 *) .btn{margin-top:6px}
 @media (max-width:760px){.s8vp:where(.svtg-thx26,.svtg-thx26 *){--fx:.7}
 .s8art:where(.svtg-thx26,.svtg-thx26 *){width:max(100cqw,calc(100cqh * 1600 / 900),230cqw)}}
-@media (prefers-reduced-motion:reduce){.t8.sit:where(.svtg-thx26,.svtg-thx26 *) img,.s8:where(.svtg-thx26,.svtg-thx26 *) .steam path{animation:none}}
+@media (prefers-reduced-motion:reduce){.t8.sit:where(.svtg-thx26,.svtg-thx26 *) img, .s8:where(.svtg-thx26,.svtg-thx26 *) .steam path{animation:none}}
 .s6:where(.svtg-thx26,.svtg-thx26 *){background:linear-gradient(180deg,#FFF2EA 0,#FFF8F3 30%,#FFFFFF 100%)!important}
 .s6:where(.svtg-thx26,.svtg-thx26 *)::before{display:none!important}
 .cs-seg:where(.svtg-thx26,.svtg-thx26 *) button{white-space:nowrap}
@@ -624,47 +544,108 @@ button:where(.svtg-thx26,.svtg-thx26 *){font:inherit}
 .tg-body:where(.svtg-thx26,.svtg-thx26 *){font-size:clamp(15px,1.1vw,17px);line-height:1.55}
 .tg-head:where(.svtg-thx26,.svtg-thx26 *){max-width:1100px;gap:10px;margin-bottom:24px}
 @media (min-width:900px){.tg-head:where(.svtg-thx26,.svtg-thx26 *) .tg-h2{white-space:nowrap}}
-.tg-h2:where(.svtg-thx26,.svtg-thx26 *),.s5head:where(.svtg-thx26,.svtg-thx26 *) .tg-h2,.s8head:where(.svtg-thx26,.svtg-thx26 *) .tg-h2{font-family:var(--tgv-disp);font-weight:700;font-size:clamp(28px,2.6vw,40px)!important;line-height:1.15!important;letter-spacing:-.01em}
-.tg-body:where(.svtg-thx26,.svtg-thx26 *),.s5head:where(.svtg-thx26,.svtg-thx26 *) .tg-body,.s8head:where(.svtg-thx26,.svtg-thx26 *) .tg-body{font-size:clamp(15px,1.15vw,17px)!important;line-height:1.55!important;color:rgba(0,0,0,.72)}
-.tg-head:where(.svtg-thx26,.svtg-thx26 *),.s5head:where(.svtg-thx26,.svtg-thx26 *),.s8head:where(.svtg-thx26,.svtg-thx26 *){display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px}
+.tg-h2:where(.svtg-thx26,.svtg-thx26 *), .s5head:where(.svtg-thx26,.svtg-thx26 *) .tg-h2, .s8head:where(.svtg-thx26,.svtg-thx26 *) .tg-h2{font-family:var(--tgv-disp);font-weight:700;font-size:clamp(28px,2.6vw,40px)!important;line-height:1.15!important;letter-spacing:-.01em}
+.tg-body:where(.svtg-thx26,.svtg-thx26 *), .s5head:where(.svtg-thx26,.svtg-thx26 *) .tg-body, .s8head:where(.svtg-thx26,.svtg-thx26 *) .tg-body{font-size:clamp(15px,1.15vw,17px)!important;line-height:1.55!important;color:rgba(0,0,0,.72)}
+.tg-head:where(.svtg-thx26,.svtg-thx26 *), .s8head:where(.svtg-thx26,.svtg-thx26 *){display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px}
 .copy:where(.svtg-thx26,.svtg-thx26 *) h1{font-size:clamp(34px,3.5vw,52px)!important}
 .copy:where(.svtg-thx26,.svtg-thx26 *) p{font-size:clamp(15px,1.25vw,18px)!important}
 @media (min-width:900px){.tg-h2:where(.svtg-thx26,.svtg-thx26 *){white-space:nowrap}}
 .cs-two:where(.svtg-thx26,.svtg-thx26 *){display:flex!important;flex-wrap:wrap;gap:12px 18px}
 .cs-two:where(.svtg-thx26,.svtg-thx26 *)>.cs-f{flex:1 1 auto;min-width:0}
-@media (hover:none) and (pointer:coarse){.guide:where(.svtg-thx26,.svtg-thx26 *)>span:not(:last-child),.guide:where(.svtg-thx26,.svtg-thx26 *)>i{display:none!important}}
+@media (hover:none) and (pointer:coarse){.guide:where(.svtg-thx26,.svtg-thx26 *)>span:not(:last-child), .guide:where(.svtg-thx26,.svtg-thx26 *)>i{display:none!important}}
 .s8vp:where(.svtg-thx26,.svtg-thx26 *){height:auto!important;min-height:0!important;max-height:none!important;container-type:normal!important;display:flex;flex-direction:column;overflow:visible!important}
 .s8head:where(.svtg-thx26,.svtg-thx26 *){position:relative!important;top:auto!important;left:auto!important;right:auto!important;padding:clamp(40px,7vh,72px) 20px clamp(12px,2.5vh,28px)!important;margin:0 auto!important}
 .s8stage:where(.svtg-thx26,.svtg-thx26 *){position:relative;overflow:hidden;container-type:size;height:clamp(320px,46vw,72vh)}
 @media (max-width:760px){.s8stage:where(.svtg-thx26,.svtg-thx26 *){height:clamp(340px,58vh,470px)}}
-.tg-h2:where(.svtg-thx26,.svtg-thx26 *),.copy:where(.svtg-thx26,.svtg-thx26 *) h1,.glass:where(.svtg-thx26,.svtg-thx26 *) h2,.c5-t:where(.svtg-thx26,.svtg-thx26 *),.ftitle:where(.svtg-thx26,.svtg-thx26 *),.bp-t:where(.svtg-thx26,.svtg-thx26 *){text-wrap:balance}
-.tg-body:where(.svtg-thx26,.svtg-thx26 *),.copy:where(.svtg-thx26,.svtg-thx26 *) p,.glass:where(.svtg-thx26,.svtg-thx26 *) p,.c5-p:where(.svtg-thx26,.svtg-thx26 *),.fsub:where(.svtg-thx26,.svtg-thx26 *),.w7card:where(.svtg-thx26,.svtg-thx26 *) .what,.t4note:where(.svtg-thx26,.svtg-thx26 *),.cs-hint:where(.svtg-thx26,.svtg-thx26 *){text-wrap:pretty}
-@media (max-width:760px){.tg-h2:where(.svtg-thx26,.svtg-thx26 *) .o,.copy:where(.svtg-thx26,.svtg-thx26 *) h1 .o,.s3head:where(.svtg-thx26,.svtg-thx26 *) h2 .o{display:block;width:fit-content;max-width:100%;margin-inline:auto}
+.tg-h2:where(.svtg-thx26,.svtg-thx26 *), .copy:where(.svtg-thx26,.svtg-thx26 *) h1, .glass:where(.svtg-thx26,.svtg-thx26 *) h2, .ftitle:where(.svtg-thx26,.svtg-thx26 *), .bp-t:where(.svtg-thx26,.svtg-thx26 *){text-wrap:balance}
+.tg-body:where(.svtg-thx26,.svtg-thx26 *), .copy:where(.svtg-thx26,.svtg-thx26 *) p, .glass:where(.svtg-thx26,.svtg-thx26 *) p, .fsub:where(.svtg-thx26,.svtg-thx26 *), .w7card:where(.svtg-thx26,.svtg-thx26 *) .what, .t4note:where(.svtg-thx26,.svtg-thx26 *), .cs-hint:where(.svtg-thx26,.svtg-thx26 *){text-wrap:pretty}
+@media (max-width:760px){.tg-h2:where(.svtg-thx26,.svtg-thx26 *) .o, .copy:where(.svtg-thx26,.svtg-thx26 *) h1 .o, .s3head:where(.svtg-thx26,.svtg-thx26 *) h2 .o{display:block;width:fit-content;max-width:100%;margin-inline:auto}
 .glass:where(.svtg-thx26,.svtg-thx26 *) h2 span{display:block;width:fit-content;max-width:100%}}
 :root{--tg-cta:linear-gradient(100deg,#E8561C 0%,#D8436A 55%,#5D5FD8 100%)}
-.w7form:where(.svtg-thx26,.svtg-thx26 *) .btn,.aform:where(.svtg-thx26,.svtg-thx26 *) .btn,.t4add:where(.svtg-thx26,.svtg-thx26 *) .btn,#csGo:where(.svtg-thx26,.svtg-thx26 *),.bp-b:where(.svtg-thx26,.svtg-thx26 *) .btn:not(.line){background:var(--tg-cta);background-size:160% 100%;background-position:0 0;box-shadow:0 10px 22px -12px rgba(93,95,216,.65);transition:transform .2s,background-position .4s,box-shadow .2s}
-.w7form:where(.svtg-thx26,.svtg-thx26 *) .btn:hover,.aform:where(.svtg-thx26,.svtg-thx26 *) .btn:hover,.t4add:where(.svtg-thx26,.svtg-thx26 *) .btn:hover,#csGo:hover:where(.svtg-thx26,.svtg-thx26 *),.bp-b:where(.svtg-thx26,.svtg-thx26 *) .btn:not(.line):hover{background-position:100% 0;filter:none;box-shadow:0 14px 26px -12px rgba(93,95,216,.75)}
+.w7form:where(.svtg-thx26,.svtg-thx26 *) .btn, .aform:where(.svtg-thx26,.svtg-thx26 *) .btn, .t4add:where(.svtg-thx26,.svtg-thx26 *) .btn, #csGo:where(.svtg-thx26,.svtg-thx26 *), .bp-b:where(.svtg-thx26,.svtg-thx26 *) .btn:not(.line){background:var(--tg-cta);background-size:160% 100%;background-position:0 0;box-shadow:0 10px 22px -12px rgba(93,95,216,.65);transition:transform .2s,background-position .4s,box-shadow .2s}
+.w7form:where(.svtg-thx26,.svtg-thx26 *) .btn:hover, .aform:where(.svtg-thx26,.svtg-thx26 *) .btn:hover, .t4add:where(.svtg-thx26,.svtg-thx26 *) .btn:hover, #csGo:hover:where(.svtg-thx26,.svtg-thx26 *), .bp-b:where(.svtg-thx26,.svtg-thx26 *) .btn:not(.line):hover{background-position:100% 0;filter:none;box-shadow:0 14px 26px -12px rgba(93,95,216,.75)}
 .aform:where(.svtg-thx26,.svtg-thx26 *) label b{color:#C2410C}
 .aform:where(.svtg-thx26,.svtg-thx26 *) input[type=range]{accent-color:#D8436A}
-.aform:where(.svtg-thx26,.svtg-thx26 *) input:focus,.aform:where(.svtg-thx26,.svtg-thx26 *) select:focus,.t4add:where(.svtg-thx26,.svtg-thx26 *) input:focus,.cs-f:where(.svtg-thx26,.svtg-thx26 *) input:focus,.cs-f:where(.svtg-thx26,.svtg-thx26 *) textarea:focus,.w7form:where(.svtg-thx26,.svtg-thx26 *) input:focus{outline-color:#6890EA}
+.aform:where(.svtg-thx26,.svtg-thx26 *) input:focus, .aform:where(.svtg-thx26,.svtg-thx26 *) select:focus, .t4add:where(.svtg-thx26,.svtg-thx26 *) input:focus, .cs-f:where(.svtg-thx26,.svtg-thx26 *) input:focus, .cs-f:where(.svtg-thx26,.svtg-thx26 *) textarea:focus, .w7form:where(.svtg-thx26,.svtg-thx26 *) input:focus{outline-color:#6890EA}
 .t4go:where(.svtg-thx26,.svtg-thx26 *){color:#D2491E}
 .t4go:hover:where(.svtg-thx26,.svtg-thx26 *){background:var(--tg-cta);color:#fff}
 .cs-shuffle:where(.svtg-thx26,.svtg-thx26 *){color:#5D5FD8}
 .w7card:nth-child(4n+2):where(.svtg-thx26,.svtg-thx26 *){border-color:#8FA9F0;box-shadow:0 6px 0 #6E86DC;background:#F7F8FF}
 .w7card:nth-child(4n+3):where(.svtg-thx26,.svtg-thx26 *){border-color:#8CCBA5;box-shadow:0 6px 0 #5E9F7C;background:#F5FBF6}
 .w7card:nth-child(4n+4):where(.svtg-thx26,.svtg-thx26 *){border-color:#F4C25A;box-shadow:0 6px 0 #DDA02C;background:#FFFAEC}
-.tg-modal:where(.svtg-thx26,.svtg-thx26 *){background:rgba(20,26,66,.34)!important}
+/* the tint belongs to the modal overlay only -- on phones the sheet is an ordinary
+   block in the page, so it must have no backdrop at all */
+@media (min-width:761px){.tg-modal:where(.svtg-thx26,.svtg-thx26 *){background:rgba(20,26,66,.34)!important}}
 .s8stage:where(.svtg-thx26,.svtg-thx26 *){height:auto!important;overflow:visible!important;container-type:normal!important}
 .s8art:where(.svtg-thx26,.svtg-thx26 *){--vx:-40;--vy:30;--vw:1720;--vh:570;position:relative!important;left:0!important;bottom:auto!important;transform:none!important;width:100%!important;aspect-ratio:var(--vw)/var(--vh)!important}
 .t8.walk:where(.svtg-thx26,.svtg-thx26 *){width:calc(150 / var(--vw) * 100%)!important;bottom:calc((var(--vy) + var(--vh) - 522) / var(--vh) * 100%)!important;left:calc((-160 - var(--vx)) / var(--vw) * 100%)}
 .t8.sit:where(.svtg-thx26,.svtg-thx26 *){left:calc((1092 - var(--vx)) / var(--vw) * 100%)!important;width:calc(250 / var(--vw) * 100%)!important;bottom:calc((var(--vy) + var(--vh) - 482) / var(--vh) * 100%)!important}
 @media (max-width:760px){.s8stage:where(.svtg-thx26,.svtg-thx26 *){-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 16%);mask-image:linear-gradient(180deg,transparent 0,#000 16%)}}
-.s5art:where(.svtg-thx26,.svtg-thx26 *) .tl-img{-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 2.2%,#000 97.8%,transparent 100%);mask-image:linear-gradient(90deg,transparent 0,#000 2.2%,#000 97.8%,transparent 100%)}
-.g5m:where(.svtg-thx26,.svtg-thx26 *){display:none}
-@media (max-width:760px){.g5-tag:where(.svtg-thx26,.svtg-thx26 *){display:none!important}
-.g5m:where(.svtg-thx26,.svtg-thx26 *){display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:6px;position:relative;z-index:8;pointer-events:auto}
-.g5m:where(.svtg-thx26,.svtg-thx26 *) button{flex:1 1 150px;max-width:220px;display:flex;flex-direction:column;align-items:flex-start;gap:3px;text-align:left;border:1.5px solid #F3C9B2;background:#fff;border-radius:14px;padding:10px 12px;font-family:var(--tgv-disp);font-weight:700;font-size:14px;line-height:1.25;color:#000;cursor:pointer;transition:opacity .3s,transform .2s,box-shadow .2s;box-shadow:0 10px 20px -16px rgba(94,18,18,.5)}
+@media (max-width:760px){
 .g5m:where(.svtg-thx26,.svtg-thx26 *) button .tg-label{font-size:10px;letter-spacing:.14em;color:#B00000}
-.s5:not(.arrived):where(.svtg-thx26,.svtg-thx26 *) .g5m button{opacity:.45;pointer-events:none}
-.g5m:where(.svtg-thx26,.svtg-thx26 *) button:active{transform:translateY(1px)}}
+.s5:not(.arrived):where(.svtg-thx26,.svtg-thx26 *) .g5m button{opacity:.45;pointer-events:none}}
 .hero:not(.live):where(.svtg-thx26,.svtg-thx26 *) .stage{-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 6%,#000 94%,transparent 100%);mask-image:linear-gradient(90deg,transparent 0,#000 6%,#000 94%,transparent 100%)}
+/* ==========================================================================
+   Mobile pass: section 3 (opportunity engine) + hero game-over card
+   ========================================================================== */
+
+/* Webflow ships a global `.stats{padding-top:120px}` for its own stats block.
+   Our game-over card uses the same class name, and the global rule was adding
+   120px of dead space between the paragraph and the two stat cards. */
+.svtg-thx26 .stats{padding:0}
+
+/* Game over: everything the game was saying (start copy, HUD, hints, the floating
+   canvas bubbles) is finished -- keep it out of the way of the card. */
+.ended:where(.svtg-thx26,.svtg-thx26 *) .copy,
+.ended:where(.svtg-thx26,.svtg-thx26 *) .hud,
+.ended:where(.svtg-thx26,.svtg-thx26 *) .guide,
+.ended:where(.svtg-thx26,.svtg-thx26 *) .paused-tag{opacity:0!important;pointer-events:none;transition:opacity .45s}
+.ended:where(.svtg-thx26,.svtg-thx26 *) .stage,
+.ended:where(.svtg-thx26,.svtg-thx26 *) .desk{opacity:.18;transition:opacity .5s}
+
+/* The sentence that used to live in the card under the machine, written on the
+   machine's own display instead. Hidden on desktop (the card carries it there). */
+.s3note:where(.svtg-thx26,.svtg-thx26 *){position:absolute;inset:0;display:none;align-items:center;justify-content:center;text-align:center;padding:8px 7px;font-family:var(--tgv-disp);font-weight:700;line-height:1.12;letter-spacing:-.01em;color:#8C1D18;opacity:0;transition:opacity .4s;pointer-events:none}
+
+@media (max-width:760px){
+  /* --- section 3: no card under the machine, the form sits there instead --- */
+  .s3:where(.svtg-thx26,.svtg-thx26 *){padding:26px 0 0}
+  .s3note:where(.svtg-thx26,.svtg-thx26 *){display:flex;font-size:clamp(9.5px,3.2cqw,13px)}
+  .m3stage:not(.st-processing):not(.st-done) .s3note:where(.svtg-thx26,.svtg-thx26 *){opacity:1}
+  .s3:where(.svtg-thx26,.svtg-thx26 *) .m3stage .sv-standby,
+  .s3:where(.svtg-thx26,.svtg-thx26 *) .m3stage .sv-ready{opacity:0}
+  .s3:where(.svtg-thx26,.svtg-thx26 *) .m3stage .sv-missed{display:none}
+  /* the white card that used to slide out under the machine: put the screen back
+     where it belongs and stop reserving 300px of space for the card */
+  .st-missed:where(.svtg-thx26,.svtg-thx26 *) .m3screen{top:20.9%;left:39.2%;width:29.7%;height:68.8%;background:transparent;border-radius:0;padding:0;box-shadow:none;cursor:default}
+  /* the missed card is gone, so it needs no room; the "done" report card still
+     sits under the machine and keeps its 300px of reserved space */
+  .m3stage.st-missed:where(.svtg-thx26,.svtg-thx26 *){margin-bottom:0}
+  .s3:where(.svtg-thx26,.svtg-thx26 *) .m3stage.st-done:where(.svtg-thx26,.svtg-thx26 *){margin-bottom:300px}
+  #amodal:where(.svtg-thx26,.svtg-thx26 *){margin-top:0}
+  /* the sheet is a normal block on a phone: no overlay, no scroll lock, no close button */
+  .tg-modal:where(.svtg-thx26,.svtg-thx26 *){position:static;inset:auto;display:block;padding:0;background:none!important;z-index:auto!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;opacity:1;transition:none}
+  .tg-modal[hidden]:where(.svtg-thx26,.svtg-thx26 *){display:none}
+  .tg-sheet:where(.svtg-thx26,.svtg-thx26 *){width:100%;max-width:none;max-height:none;overflow:visible;border-radius:20px;transform:none;box-shadow:0 26px 50px -34px rgba(94,18,18,.5)}
+  .tg-x:where(.svtg-thx26,.svtg-thx26 *){display:none}
+  .aform:where(.svtg-thx26,.svtg-thx26 *){padding:20px 18px 18px}
+  .aform:where(.svtg-thx26,.svtg-thx26 *) .btn{width:100%;justify-content:center}
+
+  /* --- hero game-over card: text starts at the top, Tom moves below it --- */
+  .over:where(.svtg-thx26,.svtg-thx26 *){padding:12px}
+  /* on a phone the card fills the screen, so the scene goes completely */
+  .ended:where(.svtg-thx26,.svtg-thx26 *) .stage,
+  .ended:where(.svtg-thx26,.svtg-thx26 *) .desk{opacity:0}
+  .glass:where(.svtg-thx26,.svtg-thx26 *){padding:20px 18px;gap:12px;align-items:stretch}
+  .gtxt:where(.svtg-thx26,.svtg-thx26 *){order:1;gap:14px;width:100%}
+  .mood:where(.svtg-thx26,.svtg-thx26 *){order:2}
+  .mood:where(.svtg-thx26,.svtg-thx26 *) .t{width:104px}
+  .mood:where(.svtg-thx26,.svtg-thx26 *) .pile{display:none}
+  .glass:where(.svtg-thx26,.svtg-thx26 *) h2{font-size:23px}
+  .glass:where(.svtg-thx26,.svtg-thx26 *) p{font-size:14.5px;line-height:1.45}
+  .stat:where(.svtg-thx26,.svtg-thx26 *){padding:11px 13px;border-radius:14px}
+  .stat:where(.svtg-thx26,.svtg-thx26 *) .n{font-size:28px}
+  .stat:where(.svtg-thx26,.svtg-thx26 *) .l{font-size:12px;margin-top:4px}
+  .btns:where(.svtg-thx26,.svtg-thx26 *){width:100%;flex-direction:column;gap:8px}
+  .btns:where(.svtg-thx26,.svtg-thx26 *) .btn{width:100%;justify-content:center}
+}
