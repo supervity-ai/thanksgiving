@@ -185,6 +185,12 @@ def build():
 .svtg-thx26 .cs-shuffle{justify-content:center;border:1px solid #E8D3C9;border-radius:999px;background:#fff;padding:12px 16px;font-size:15px}
 .svtg-thx26 .cs-shuffle svg{flex:none}
 }
+/* ---- hero subline: one line from 1024 px up (copy trimmed to 116 characters, the old 153-character
+   version could not fit a 1440-wide box without breaking). The measure is released from base.css's
+   900 px cap so the single line has room; type drops one notch on desktop for slack. */
+@media (min-width:1025px){
+.hero:where(.svtg-thx26,.svtg-thx26 *) .copy p{max-width:none;font-size:17px!important}
+}
 /* ---- section 3 background: assets/right-help-start-with-right-bg.svg, served from the same
    jsDelivr folder as every other asset and wired up at runtime by TG_ASSET (the --tg-s3-bg custom
    property in 12-script-a). It sits on top of the layered gradient, so if the file ever fails to
