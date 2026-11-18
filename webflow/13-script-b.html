@@ -1,7 +1,7 @@
 <script>
 (() => {
-  // Paste your Jotform form ID here to load it in the pop-up instead of the built-in form.
-  const JOTFORM_ID = '';
+  // The assessment pop-up hosts this Jotform; the built-in form is no longer in the markup.
+  const JOTFORM_ID = '262874929096071';
   const m = document.getElementById('m3'), tom = document.getElementById('m3tom'), walk = tom.querySelector('.walk');
   const fly = document.getElementById('flypile'), carry = document.getElementById('carry');
   const modal = document.getElementById('amodal'), form = document.getElementById('aform');
@@ -49,33 +49,49 @@
   modal.addEventListener('click', (e) => { if (e.target === modal) closeForm(); });
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !modal.hidden) closeForm(); });
 
-  if (JOTFORM_ID) {
+  let jotMounted = false;
+  function mountJot() {   // built on demand: nothing is requested from Jotform until the pop-up is needed
+    if (jotMounted || !JOTFORM_ID) return; jotMounted = true;
     modal.querySelector('.tg-sheet').classList.add('has-jot');
-    document.getElementById('jot').innerHTML = '<iframe title="AI Employee Opportunity Assessment" src="https://form.jotform.com/' + JOTFORM_ID + '"></iframe>';
-    // Start processing only when Jotform reports a completed submission (confirm the event name against your embed).
+    const frame = document.createElement('iframe');
+    frame.id = 'JotFormIFrame-' + JOTFORM_ID;
+    frame.title = 'AI Employee Opportunity Assessment';
+    frame.src = 'https://form.jotform.com/' + JOTFORM_ID;
+    frame.setAttribute('allow', 'geolocation; microphone; camera');
+    frame.setAttribute('allowtransparency', 'true');
+    frame.setAttribute('frameborder', '0');
+    document.getElementById('jot').appendChild(frame);
+    // Jotform's embed handler sizes the frame to the form and posts a completion message.
+    const t = document.createElement('script');
+    t.src = 'https://cdn.jotfor.ms/s/umd/latest/for-form-embed-handler.js';
+    t.onload = () => { try { window.jotformEmbedHandler("iframe[id='JotFormIFrame-" + JOTFORM_ID + "']", 'https://form.jotform.com/'); } catch (err) {} };
+    document.head.appendChild(t);
     window.addEventListener('message', (e) => {
-      if (!/jotform/.test(e.origin || '')) return;
+      if (!/jotform|jotfor\.ms/.test(e.origin || '')) return;
       const d = typeof e.data === 'string' ? e.data : JSON.stringify(e.data || '');
-      if (/submission-completed|formSubmitted/i.test(d)) run('');
+      if (/submission-completed|formSubmitted|thank-?you/i.test(d)) run('');
     });
   }
+  if (JOTFORM_ID) mountJot();
   if (isMob()) { modal.hidden = false; }   // the form replaces the card that used to sit under the machine
-  const q4 = document.getElementById('q4');
-  q4.addEventListener('input', () => { const v = +q4.value; document.getElementById('q4v').textContent = v >= 60 ? (v / 60).toFixed(v % 60 ? 1 : 0) + (v === 60 ? ' hour' : ' hours') : v + ' minutes'; });
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const q1 = document.getElementById('q1'), q8 = document.getElementById('q8');
-    if (!q1.value.trim() || !q8.checkValidity()) { form.classList.add('invalid'); (q1.value.trim() ? q8 : q1).focus(); return; }   // machine stays ready
-    form.classList.remove('invalid');
-    run(q8.value.trim());
-  });
+  if (form) {
+    const q4 = document.getElementById('q4');
+    q4.addEventListener('input', () => { const v = +q4.value; document.getElementById('q4v').textContent = v >= 60 ? (v / 60).toFixed(v % 60 ? 1 : 0) + (v === 60 ? ' hour' : ' hours') : v + ' minutes'; });
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const q1 = document.getElementById('q1'), q8 = document.getElementById('q8');
+      if (!q1.value.trim() || !q8.checkValidity()) { form.classList.add('invalid'); (q1.value.trim() ? q8 : q1).focus(); return; }   // machine stays ready
+      form.classList.remove('invalid');
+      run(q8.value.trim());
+    });
+  }
   async function run(email) {
     document.getElementById('bpmail').textContent = email || 'your inbox';
     closeForm('processing'); state('processing');
     await wait(4400); m.classList.add('opening');
     await wait(1100); m.classList.remove('opening'); state('done');
   }
-  document.getElementById('again').addEventListener('click', () => { form.reset(); q4.dispatchEvent(new Event('input')); state('ready'); openForm(); });
+  document.getElementById('again').addEventListener('click', () => { if (form) { form.reset(); const q4 = document.getElementById('q4'); if (q4) q4.dispatchEvent(new Event('input')); } state('ready'); openForm(); });
 })();
 
 (() => {   // put the machine's floor exactly on the floor line of the background (92.5% of the section)

@@ -185,6 +185,17 @@ def build():
 .svtg-thx26 .cs-shuffle{justify-content:center;border:1px solid #E8D3C9;border-radius:999px;background:#fff;padding:12px 16px;font-size:15px}
 .svtg-thx26 .cs-shuffle svg{flex:none}
 }
+/* ---- the §3 assessment pop-up hosts the Jotform (13-script-b builds the iframe on first need).
+   The built-in form is gone from the markup, so the sheet is just a white frame: no padding of its
+   own, Jotform's own card supplies the spacing, and the close button sits above the frame. */
+.tg-sheet.has-jot:where(.svtg-thx26,.svtg-thx26 *){width:min(780px,100%);max-height:min(940px,calc(100vh - 20px));background:#fff}
+.has-jot:where(.svtg-thx26,.svtg-thx26 *) .jot{overflow:hidden;border-radius:22px;background:#fff}
+.has-jot:where(.svtg-thx26,.svtg-thx26 *) .jot iframe{width:100%;height:min(900px,calc(100vh - 40px));border:0;display:block;background:#fff}
+.has-jot:where(.svtg-thx26,.svtg-thx26 *) .tg-x{background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.18)}
+@media (max-width:760px){
+.tg-sheet.has-jot:where(.svtg-thx26,.svtg-thx26 *){width:100%;max-height:none;border-radius:20px}
+.has-jot:where(.svtg-thx26,.svtg-thx26 *) .jot iframe{height:min(620px,calc(100dvh - 220px))}
+}
 /* ---- hero subline: one line from 1024 px up (copy trimmed to 116 characters, the old 153-character
    version could not fit a 1440-wide box without breaking). The measure is released from base.css's
    900 px cap so the single line has room; type drops one notch on desktop for slack. */
