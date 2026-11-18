@@ -14,11 +14,13 @@
     lastFocus = document.activeElement; modal.hidden = false;
     requestAnimationFrame(() => modal.classList.add('show'));
     state('form'); document.body.style.overflow = 'hidden';
+    if (window.TG_SCROLL_LOCK) TG_SCROLL_LOCK(true);
     setTimeout(() => { const f = document.getElementById('q1'); if (f && !JOTFORM_ID) f.focus({ preventScroll: true }); }, 380);
   }
   function closeForm(next) {
     if (isMob()) { if (next === 'processing') modal.hidden = true; return; }   // the inline form never closes
     modal.classList.remove('show'); document.body.style.overflow = '';
+    if (window.TG_SCROLL_LOCK) TG_SCROLL_LOCK(false);
     setTimeout(() => { modal.hidden = true; }, 350);
     if (next !== 'processing') state('missed');   // closed without finishing: the machine asks them back
     if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });

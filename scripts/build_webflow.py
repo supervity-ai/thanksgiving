@@ -185,6 +185,28 @@ def build():
 .svtg-thx26 .cs-shuffle{justify-content:center;border:1px solid #E8D3C9;border-radius:999px;background:#fff;padding:12px 16px;font-size:15px}
 .svtg-thx26 .cs-shuffle svg{flex:none}
 }
+/* ---- section 3 background: assets/right-help-start-with-right-bg.svg, served from the same
+   jsDelivr folder as every other asset and wired up at runtime by TG_ASSET (the --tg-s3-bg custom
+   property in 12-script-a). It sits on top of the layered gradient, so if the file ever fails to
+   load the section still shows the designed wall/floor bands. Anchored bottom + cover keeps its
+   floor line under the machine; phones keep the gradient because the section grows to fit the
+   inline form there, which would stretch the image's bands out of proportion. */
+@media (min-width:761px){
+.s3:where(.svtg-thx26,.svtg-thx26 *){background:var(--tg-s3-bg,none) center bottom/cover no-repeat,linear-gradient(180deg,#FCE3D6 0%,#FFF7F2 12.5%,#FFF5EF 58.3%,#FDEBE1 58.3%,#FDEBE1 92.5%,#FFF2EA 92.5%,#FFF2EA 100%) center/cover no-repeat #FFF1E9!important}
+}
+/* the machine-screen CTA reads as one line; the 9% side padding of .sv-missed used to wrap it */
+.svtg-thx26.s3 .sv-missed .ms-b:where(.svtg-thx26,.svtg-thx26 *){white-space:nowrap;flex:none;max-width:none}
+@media (max-width:1200px){.svtg-thx26.s3 .sv-missed .ms-b:where(.svtg-thx26,.svtg-thx26 *){font-size:13px;height:40px;padding:0 12px}}
+@media (max-width:900px){.svtg-thx26.s3 .sv-missed:where(.svtg-thx26,.svtg-thx26 *){padding:0 4%}.svtg-thx26.s3 .sv-missed .ms-b:where(.svtg-thx26,.svtg-thx26 *){font-size:11.5px;height:38px;padding:0 9px}.svtg-thx26.s3 .sv-missed .ms-b:where(.svtg-thx26,.svtg-thx26 *) svg{width:13px;height:13px}}
+/* hero copy on phones: the 1.04 leading clipped descenders and the paragraph read tight */
+@media (max-width:760px){
+.copy:where(.svtg-thx26,.svtg-thx26 *){gap:12px}
+.copy:where(.svtg-thx26,.svtg-thx26 *) h1{font-size:clamp(29px,7.6vw,36px);line-height:1.14;padding-bottom:.06em}
+.copy:where(.svtg-thx26,.svtg-thx26 *) p{max-width:33ch;font-size:13.5px!important;line-height:1.52!important;letter-spacing:.005em}
+}
+/* page scroll lock for the pop-ups: body overflow alone does nothing in iOS Safari */
+html.tg-lock,html.tg-lock body{overflow:hidden}
+html.tg-lock body{position:fixed;left:0;right:0;width:100%}
 """
         css_source = CSS_SOURCE.read_text() + css_patch
         css_full = minify_css(css_source, tmp)

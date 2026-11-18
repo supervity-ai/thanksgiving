@@ -16,6 +16,10 @@
     --gg-btn: #b00000;
     /* frame sits in the area under the fixed navbar (chrome height measured at runtime) */
     --gg-offset: var(--tgv-siteh, 0px);
+    /* KNOB -> how far the headline sits below the top of the frame.
+       Raise it to push the copy down, lower it to pull the copy up (see SPACING-KNOBS.md).
+       Phones: keep the nav clearance, the phone camera frames the room off this block. */
+    --gg-head-top: calc(var(--gg-offset, 0px) + clamp(18px, 3.4vh, 40px));
     position: relative;
     width: 100%;
     margin: 0;
@@ -46,7 +50,7 @@
     left: 0;
     right: 0;
     top: 0;
-    padding-top: calc(var(--gg-offset, 0px) + clamp(18px, 3.4vh, 40px)) !important;
+    padding-top: var(--gg-head-top) !important;
     padding-bottom: 28px !important;
     /* same cream as the section, so the band is invisible over empty wall and only ever
        hides the art that would otherwise sit behind the copy; the last 45% is a slow fade
@@ -71,8 +75,8 @@
      only opened a dead band above the headline. Phones keep the original padding: their
      camera frames the room off the same block, so moving it would drop the room down. */
   @media (min-width: 761px) {
-    .tgg .gg-head {
-      padding-top: clamp(30px, 3.2vh, 38px) !important;
+    .tgg {
+      --gg-head-top: clamp(20px, 3.2vh, 38px);
     }
   }
   .tgg .gg-h2 {
@@ -345,6 +349,13 @@
   .tgg.ready .gg-say {
     opacity: 1;
     transform: none;
+  }
+  /* once the gift has been opened the bubble is just clutter, so it fades away for good */
+  .tgg.has-open .gg-say {
+    opacity: 0 !important;
+    visibility: hidden;
+    transform: translateY(-6px);
+    transition: opacity 0.35s, transform 0.35s, visibility 0.35s;
   }
   /* the gift */
   .tgg .gg-gift {

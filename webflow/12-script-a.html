@@ -1,5 +1,5 @@
 <script>
-(function(){var w=window;w.TG_ASSET=w.TG_ASSET||function(n){var m=w.TG_ASSET_MAP||{};return m[n]||(w.TG_ASSET_BASE||'')+n};var r=document.documentElement.style,v={"--tg-chrome-bar": "chrome-bar.svg", "--tg-doodle": "doodle.png"};for(var k in v)r.setProperty(k,'url("'+w.TG_ASSET(v[k])+'")');document.querySelectorAll('[data-tg-src]').forEach(function(e){e.src=w.TG_ASSET(e.getAttribute('data-tg-src'))});document.querySelectorAll('[data-tg-href]').forEach(function(e){var u=w.TG_ASSET(e.getAttribute('data-tg-href'));e.setAttribute('href',u);e.setAttributeNS('http://www.w3.org/1999/xlink','xlink:href',u)});})();
+(function(){var w=window;w.TG_ASSET=w.TG_ASSET||function(n){var m=w.TG_ASSET_MAP||{};return m[n]||(w.TG_ASSET_BASE||'')+n};var r=document.documentElement.style,v={"--tg-chrome-bar": "chrome-bar.svg", "--tg-doodle": "doodle.png", "--tg-s3-bg": "right-help-start-with-right-bg.svg"};for(var k in v)r.setProperty(k,'url("'+w.TG_ASSET(v[k])+'")');document.querySelectorAll('[data-tg-src]').forEach(function(e){e.src=w.TG_ASSET(e.getAttribute('data-tg-src'))});document.querySelectorAll('[data-tg-href]').forEach(function(e){var u=w.TG_ASSET(e.getAttribute('data-tg-href'));e.setAttribute('href',u);e.setAttributeNS('http://www.w3.org/1999/xlink','xlink:href',u)});})();
 (() => {   // keep the campaign clear of the real Webflow chrome
   'use strict';
   const root = document.documentElement;
@@ -47,7 +47,40 @@ function placeDesk() {
   desk.style.width = (360 * k * SC) + 'px';
   desk.style.transform = 'translate(' + x + 'px,' + ((OFFY + GROUND - 290 * k) * SC) + 'px)';
 }
-window.addEventListener('resize', size);
+/* iOS Safari ignores body{overflow:hidden} and fires `resize` on every toolbar move; the
+   second part is what made the hero scene visibly jump ("shake") while scrolling. */
+(function () {
+  var y = 0;
+  window.TG_SCROLL_LOCK = function (on) {
+    var root = document.documentElement;
+    if (on) {
+      if (root.classList.contains('tg-lock')) return;
+      y = window.pageYOffset || root.scrollTop || 0;
+      root.classList.add('tg-lock');
+      document.body.style.top = (-y) + 'px';
+    } else {
+      if (!root.classList.contains('tg-lock')) return;
+      root.classList.remove('tg-lock');
+      document.body.style.top = '';
+      window.scrollTo(0, y);
+    }
+  };
+  var t = 0, lw = window.innerWidth, lh = window.innerHeight;
+  function refit() {
+    clearTimeout(t);
+    t = setTimeout(function () {
+      var w = window.innerWidth, h = window.innerHeight,
+        coarse = window.matchMedia && matchMedia('(pointer:coarse)').matches;
+      /* a toolbar show/hide only changes the height by 60-110 px: re-fitting the canvas for
+         that makes the desk and Tom jump, so on touch screens only a width change or a real
+         height change re-fits. */
+      if (coarse && w === lw && Math.abs(h - lh) < 120) { lh = h; return; }
+      lw = w; lh = h; size();
+    }, 140);
+  }
+  window.addEventListener('resize', refit);
+  window.addEventListener('orientationchange', refit);
+})();
 
 const fresh = () => ({ t: 0, dist: 0, speed: 0, intro: true, y: GROUND, vy: 0, duck: false, duckUntil: 0, obs: [], picks: [], fx: [], next: 1.8, nextPick: 1.1,
   hours: 0, dodged: 0, lives: 3, inv: 0, over: false, frameT: 0, clock: 9, papers: [] });

@@ -205,7 +205,9 @@
       if (open || gift.disabled) return;
       open = true;
       sec.classList.add("focus");
+      sec.classList.add("has-open");          // the "This one's for you" bubble has done its job
       gift.classList.add("opened");
+      if (window.TG_SCROLL_LOCK) TG_SCROLL_LOCK(true);
       gift.setAttribute("aria-expanded", "true");
       after(650, function () {
         card.hidden = false;
@@ -223,6 +225,7 @@
       });
       open = false;
       sec.classList.remove("focus");
+      if (window.TG_SCROLL_LOCK) TG_SCROLL_LOCK(false);
       gift.focus({ preventScroll: true });
     }
     gift.addEventListener("click", openGift);
