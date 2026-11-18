@@ -49,10 +49,13 @@
     top: 0;
     padding-top: calc(var(--gg-offset, 0px) + clamp(18px, 3.4vh, 40px)) !important;
     padding-bottom: 28px !important;
+    /* same cream as the section, so the band is invisible over empty wall and only ever
+       hides the art that would otherwise sit behind the copy; the last 45% is a slow fade
+       so there is no hard edge. */
     background: linear-gradient(
       180deg,
-      rgba(254, 241, 234, 0.97) 0,
-      rgba(254, 241, 234, 0.92) 75%,
+      #fef1ea 0,
+      #fef1ea 55%,
       rgba(254, 241, 234, 0) 100%
     );
     z-index: 6;
@@ -63,6 +66,15 @@
     text-align: center;
     padding: 0 20px;
     pointer-events: none;
+  }
+  /* On desktop the section is already parked under the fixed nav by its scroll-margin-top
+     (and its own height subtracts that offset), so charging the nav height again as padding
+     only opened a dead band above the headline. Phones keep the original padding: their
+     camera frames the room off the same block, so moving it would drop the room down. */
+  @media (min-width: 761px) {
+    .tgg .gg-head {
+      padding-top: clamp(20px, 3.2vh, 38px) !important;
+    }
   }
   .tgg .gg-h2 {
     margin: 0;
@@ -123,6 +135,21 @@
   }
   .tgg.focus #ggW2 .gg-art {
     filter: blur(2.2px) saturate(0.92);
+  }
+  /* the bunting hangs a fixed distance above the floor while the camera lifts the art on
+     shorter viewports, so on short screens it reaches back up into the headline block and
+     shows through the copy. There is nowhere for it to sit clear of the text there, so it is
+     simply not drawn; screens with room keep it (verified clear from 768 px up on desktop,
+     840 px up on phones). */
+  @media (min-width: 761px) and (max-height: 755px) {
+    .tgg .gg-bunting {
+      display: none;
+    }
+  }
+  @media (max-width: 760px) and (max-height: 830px) {
+    .tgg .gg-bunting {
+      display: none;
+    }
   }
   .tgg .gg-flag {
     transform-box: fill-box;
@@ -1052,6 +1079,7 @@
               fill="url(#tga-buildA)"
               opacity=".8"
             />
+            <g class="gg-bunting">
             <path
               d="M380 120 Q820 230 1260 120"
               stroke="#C9452A"
@@ -1174,6 +1202,7 @@
                 d="M0 -10 C3 -6 7 -5 9 -2 C5 -1 4 2 4 6 C2 4 0 4 0 7 C0 4 -2 4 -4 6 C-4 2 -5 -1 -9 -2 C-7 -5 -3 -6 0 -10Z"
                 fill="url(#tga-g-FD6523-sky)"
               />
+            </g>
             </g>
             <ellipse cx="900" cy="560" rx="420" ry="30" fill="#F7C9B3" />
             <rect
