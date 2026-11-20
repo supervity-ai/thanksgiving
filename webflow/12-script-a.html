@@ -12,6 +12,13 @@
   apply();
   addEventListener('load', apply);
   addEventListener('resize', () => { apply(); setTimeout(apply, 300); });
+  // The Webflow nav/banner can change height on scroll (hide/show) without a
+  // window resize, which would leave the hero copy at a stale offset when the
+  // user scrolls back to the top. Re-measure whenever the nav itself resizes.
+  if ('ResizeObserver' in window) {
+    const nav = document.querySelector('.w-nav');
+    if (nav) new ResizeObserver(() => apply()).observe(nav);
+  }
 })();
 (() => {
 'use strict';
@@ -48,7 +55,17 @@ function placeDesk() {
   desk.style.transform = 'translate(' + x + 'px,' + ((OFFY + GROUND - 290 * k) * SC) + 'px)';
 }
 /* iOS Safari ignores body{overflow:hidden} and fires `resize` on every toolbar move; the
-   second part is what made the hero scene visibly jump ("shake") while scrolling. */
+   second part is what made the hero scene visibly jump ("shake") while scrolling.
+   Fix (scroll-back bug): the hero height is now 100svh (small viewport height), which
+   does NOT change when the mobile browser toolbar hides/shows on scroll, so the stage
+   size is stable while scrolling. The old code used 100dvh (dynamic) for the CSS height
+   but deliberately skipped size() for <120px height changes on touch screens -- so on
+   scroll-back the hero box shrank/grew with dvh while the canvas bitmap, SC/OFFY and
+   the desk transform stayed at the old size, leaving Tom's desk clipped below the
+   hero or floating above the floor. Now size() is driven by a ResizeObserver on the
+   stage itself: it runs only when the stage actually changes size (orientation,
+   desktop resize, real layout change), never for a toolbar-only innerHeight change
+   that leaves the svh-sized stage untouched. */
 (function () {
   var y = 0;
   window.TG_SCROLL_LOCK = function (on) {
@@ -65,21 +82,21 @@ function placeDesk() {
       window.scrollTo(0, y);
     }
   };
-  var t = 0, lw = window.innerWidth, lh = window.innerHeight;
+  var t = 0, lastW = 0, lastH = 0;
   function refit() {
     clearTimeout(t);
     t = setTimeout(function () {
-      var w = window.innerWidth, h = window.innerHeight,
-        coarse = window.matchMedia && matchMedia('(pointer:coarse)').matches;
-      /* a toolbar show/hide only changes the height by 60-110 px: re-fitting the canvas for
-         that makes the desk and Tom jump, so on touch screens only a width change or a real
-         height change re-fits. */
-      if (coarse && w === lw && Math.abs(h - lh) < 120) { lh = h; return; }
-      lw = w; lh = h; size();
-    }, 140);
+      var w = stage.clientWidth, h = stage.clientHeight;
+      if (w === lastW && h === lastH) return;   // toolbar-only change: stage (svh) unchanged
+      lastW = w; lastH = h; size();
+    }, 50);
   }
-  window.addEventListener('resize', refit);
-  window.addEventListener('orientationchange', refit);
+  if ('ResizeObserver' in window) {
+    new ResizeObserver(refit).observe(stage);
+  } else {
+    window.addEventListener('resize', refit);
+    window.addEventListener('orientationchange', refit);
+  }
 })();
 
 const fresh = () => ({ t: 0, dist: 0, speed: 0, intro: true, y: GROUND, vy: 0, duck: false, duckUntil: 0, obs: [], picks: [], fx: [], next: 1.8, nextPick: 1.1,

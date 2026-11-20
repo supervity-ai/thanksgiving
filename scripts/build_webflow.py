@@ -131,10 +131,10 @@ def build():
 @media (min-width:992px) and (max-width:1199px){:root{--tgv-nav:13rem}}
 .svtg-thx26.tg-bar,.svtg-thx26.tg-nav{display:none!important}
 .w-nav{z-index:10001!important}
-/* above Webflow's fixed nav (z-index 10001) on desktop only: on a phone the sheet is a
-   flex item inside section 3 and a z-index there paints it over the navbar */
-@media (min-width:761px){
+/* above Webflow's fixed nav (z-index 10001): the §3 form is a fixed pop-up on
+   every screen size, so it must paint above the nav on phones too */
 .tg-modal:where(.svtg-thx26,.svtg-thx26 *){z-index:999999!important}
+@media (min-width:761px){
 .over:where(.svtg-thx26,.svtg-thx26 *){z-index:999999!important}
 }
 .s7:where(.svtg-thx26,.svtg-thx26 *){position:relative;z-index:2;height:auto!important;min-height:0!important;max-height:none!important;overflow:visible!important}
@@ -157,7 +157,7 @@ def build():
 .svtg-mobile-game-hint{display:inline}
 .svtg-desktop-game-hint{display:none!important}
 .s4:where(.svtg-thx26,.svtg-thx26 *){display:none!important}
-.hero:where(.svtg-thx26,.svtg-thx26 *){min-height:0;height:100svh;height:100dvh}
+.hero:where(.svtg-thx26,.svtg-thx26 *){min-height:0;height:100vh;height:100svh}
 #hero .copy{top:calc(var(--tgv-siteh) + var(--tgv-copygap))!important;width:100%;padding:0 18px;gap:8px}
 .veil:where(.svtg-thx26,.svtg-thx26 *){background:linear-gradient(180deg,#FFF7F3 0%,rgba(255,247,243,.985) 30%,rgba(251,215,197,.78) 50%,rgba(251,207,185,.2) 68%,rgba(251,207,185,0) 86%)!important}
 .copy:where(.svtg-thx26,.svtg-thx26 *) h1{font-size:clamp(30px,8vw,38px);line-height:1.04}
@@ -186,28 +186,19 @@ def build():
 .svtg-thx26 .cs-shuffle svg{flex:none}
 }
 /* ---- the §3 assessment pop-up hosts the Jotform (13-script-b builds the iframe on first need).
-   ONE scrollbar only: the sheet is a fixed-height window that never scrolls itself, and the iframe is
-   pinned to exactly the sheet's height so the form does the scrolling. Without this the sheet's own
-   overflow and the form's height fight each other and the visitor gets two scrollbars side by side.
-   The iframe height is !important so Jotform's embed handler cannot stretch it past the sheet (it
-   reports the full form height, ~2,500 px). The built-in form is gone from the markup, so the sheet
-   is just a white frame: Jotform's own card supplies the spacing and the close button sits above. */
-@media (min-width:761px){
-.tg-sheet.has-jot:where(.svtg-thx26,.svtg-thx26 *){width:min(780px,100%);height:min(880px,calc(100vh - 20px));max-height:none;overflow:hidden;display:flex;background:#fff}
+   ONE scrollbar only, on every screen size: the sheet is a fixed-height window that never
+   scrolls itself, and the iframe is pinned to exactly the sheet's height so the form does
+   the scrolling. Without this the sheet's own overflow and the form's height fight each
+   other and the visitor gets two scrollbars side by side. The iframe height is !important
+   so Jotform's embed handler cannot stretch it past the sheet (it reports the full form
+   height, ~2,500 px). The built-in form is gone from the markup, so the sheet is just a
+   white frame: Jotform's own card supplies the spacing and the close button sits above.
+   Phones use the same centred pop-up as desktop (svh so the sheet does not jump when
+   the mobile browser toolbar hides/shows while the pop-up is open). */
+.tg-sheet.has-jot:where(.svtg-thx26,.svtg-thx26 *){width:min(780px,100%);height:min(880px,calc(100vh - 20px));height:min(880px,calc(100svh - 20px));max-height:none;overflow:hidden;display:flex;background:#fff}
 .has-jot:where(.svtg-thx26,.svtg-thx26 *) .jot{flex:1;min-height:0;overflow:hidden;border-radius:22px;background:#fff}
-.has-jot:where(.svtg-thx26,.svtg-thx26 *) .jot iframe{height:100%!important}
-}
-/* phones: the form is part of the page, so it must never scroll inside its own box — the sheet grows to
-   whatever height Jotform's handler reports and the page does the scrolling. No height override here on
-   purpose: the handler writes the frame's height inline and that has to win. */
-.tg-sheet.has-jot:where(.svtg-thx26,.svtg-thx26 *){width:min(780px,100%);background:#fff}
-.has-jot:where(.svtg-thx26,.svtg-thx26 *) .jot{border-radius:22px;background:#fff}
-.has-jot:where(.svtg-thx26,.svtg-thx26 *) .jot iframe{width:100%;border:0;display:block;background:#fff}
+.has-jot:where(.svtg-thx26,.svtg-thx26 *) .jot iframe{width:100%;height:100%!important;border:0;display:block;background:#fff}
 .has-jot:where(.svtg-thx26,.svtg-thx26 *) .tg-x{background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.18)}
-@media (max-width:760px){
-.tg-sheet.has-jot:where(.svtg-thx26,.svtg-thx26 *){width:100%;height:auto;max-height:none;overflow:visible;border-radius:20px}
-.has-jot:where(.svtg-thx26,.svtg-thx26 *) .jot{border-radius:20px;overflow:hidden}
-}
 /* ---- hero subline: one line from 1024 px up (copy trimmed to 116 characters, the old 153-character
    version could not fit a 1440-wide box without breaking). The measure is released from base.css's
    900 px cap so the single line has room; type drops one notch on desktop for slack. */

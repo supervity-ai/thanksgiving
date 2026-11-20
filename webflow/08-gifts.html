@@ -35,6 +35,15 @@
   .tgg *::after {
     box-sizing: border-box;
   }
+  /* anchor offset div (id="ai-readiness-checklist"): 100px above the section */
+  .tgg .tg-anchor {
+    position: absolute;
+    top: -100px;
+    left: 0;
+    width: 1px;
+    height: 1px;
+    pointer-events: none;
+  }
   /* the section is one full-bleed frame, edge to edge */
   .tgg .gg-vp {
     position: relative;
@@ -878,6 +887,7 @@
   }
 </style>
 <section class="tgg" id="sec5" aria-labelledby="gg-h">
+  <div class="tg-anchor" id="ai-readiness-checklist" aria-hidden="true"></div>
   <div class="gg-vp" id="ggVp">
     <div class="gg-head">
       <h2 class="gg-h2" id="gg-h">

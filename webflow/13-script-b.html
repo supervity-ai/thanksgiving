@@ -5,12 +5,18 @@
   const m = document.getElementById('m3'), tom = document.getElementById('m3tom'), walk = tom.querySelector('.walk');
   const fly = document.getElementById('flypile'), carry = document.getElementById('carry');
   const modal = document.getElementById('amodal'), form = document.getElementById('aform');
+  // Move the pop-up to <body>: inside the section it is trapped in the w-embed
+  // stacking context (z-index:2 for §7), so its own z-index can never paint it
+  // above the fixed Webflow nav and the close button ends up unclickable.
+  // The modal carries .svtg-thx26, so all scoped styles still match at body level.
+  if (modal && modal.parentElement !== document.body) document.body.appendChild(modal);
+  if (modal) modal.classList.add('svtg-thx26');
   let started = false, lastFocus = null;
-  const isMob = () => innerWidth <= 760;   // phones: the form is part of the page, never a pop-up
+  // The assessment form is a pop-up on every screen size, phones included
+  // (same centred fixed modal as desktop: overlay, close button, scroll lock).
   const state = (s) => { m.className = m.className.replace(/st-\w+/, 'st-' + s); };
   const wait = (ms) => new Promise((r) => setTimeout(r, ms));
   function openForm() {
-    if (isMob()) { modal.hidden = false; return; }   // already on the page, nothing to pop up
     lastFocus = document.activeElement; modal.hidden = false;
     requestAnimationFrame(() => modal.classList.add('show'));
     state('form'); document.body.style.overflow = 'hidden';
@@ -18,7 +24,6 @@
     setTimeout(() => { const f = document.getElementById('q1'); if (f && !JOTFORM_ID) f.focus({ preventScroll: true }); }, 380);
   }
   function closeForm(next) {
-    if (isMob()) { if (next === 'processing') modal.hidden = true; return; }   // the inline form never closes
     modal.classList.remove('show'); document.body.style.overflow = '';
     if (window.TG_SCROLL_LOCK) TG_SCROLL_LOCK(false);
     setTimeout(() => { modal.hidden = true; }, 350);
@@ -39,12 +44,11 @@
     await wait(350); m.classList.add('shake');
     await wait(600); m.classList.remove('shake', 'gulp');
     state('ready'); await wait(650);
-    if (isMob()) return;                             // phones read the form in place, see .s3note
     if (inView) openForm(); else pending = true;     // the form pops up by itself, only while the visitor is here
   }
   let inView = false, pending = false;
-  new IntersectionObserver((es) => { inView = es[0].isIntersecting; if (inView) { if (pending) { pending = false; if (!isMob()) openForm(); } deliver(); } }, { threshold: .55 }).observe(m);
-  document.getElementById('m3screen').addEventListener('click', () => { if (!isMob() && /st-(ready|missed)/.test(m.className)) openForm(); });
+  new IntersectionObserver((es) => { inView = es[0].isIntersecting; if (inView) { if (pending) { pending = false; openForm(); } deliver(); } }, { threshold: .55 }).observe(m);
+  document.getElementById('m3screen').addEventListener('click', () => { if (/st-(ready|missed)/.test(m.className)) openForm(); });
   document.getElementById('aclose').addEventListener('click', () => closeForm());
   modal.addEventListener('click', (e) => { if (e.target === modal) closeForm(); });
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !modal.hidden) closeForm(); });
@@ -73,7 +77,8 @@
     });
   }
   if (JOTFORM_ID) mountJot();
-  if (isMob()) { modal.hidden = false; }   // the form replaces the card that used to sit under the machine
+  // Modal starts hidden on all screen sizes (hidden attribute in markup);
+  // it opens via deliver()/m3screen click, exactly like desktop.
   if (form) {
     const q4 = document.getElementById('q4');
     q4.addEventListener('input', () => { const v = +q4.value; document.getElementById('q4v').textContent = v >= 60 ? (v / 60).toFixed(v % 60 ? 1 : 0) + (v === 60 ? ' hour' : ' hours') : v + ' minutes'; });
