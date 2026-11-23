@@ -649,12 +649,12 @@ button:where(.svtg-thx26,.svtg-thx26 *){font:inherit}
 }
 
 /* Section anchor offsets (ai-employee-opportunity-assessment, ai-readiness-checklist,
-   card-generator, wall-of-thanks): the id lives on an absolute .tg-anchor div 100px
+   card-generator, wall-of-thanks): the id lives on an absolute .tg-anchor div 150px
    above the section, NOT on the section itself (sections keep their sec* ids for JS
    and internal links). Sections must be position:relative for the offset to anchor to
    them -- .tg-sec and .tgg already are, reinforced here. The div is 1x1px and
    pointer-events:none, so it never affects layout. */
 .tg-sec:where(.svtg-thx26,.svtg-thx26 *){position:relative}
-.tg-anchor:where(.svtg-thx26,.svtg-thx26 *){position:absolute;top:-100px;left:0;width:1px;height:1px;pointer-events:none}
+.tg-anchor:where(.svtg-thx26,.svtg-thx26 *){position:absolute;top:-150px;left:0;width:1px;height:1px;pointer-events:none}
 .tgg{position:relative}
-.tgg .tg-anchor{position:absolute;top:-100px;left:0;width:1px;height:1px;pointer-events:none}
+.tgg .tg-anchor{position:absolute;top:-150px;left:0;width:1px;height:1px;pointer-events:none}
