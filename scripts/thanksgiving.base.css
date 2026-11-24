@@ -648,8 +648,8 @@ button:where(.svtg-thx26,.svtg-thx26 *){font:inherit}
   .btns:where(.svtg-thx26,.svtg-thx26 *) .btn{width:100%;justify-content:center}
 }
 
-/* Section anchor offsets (ai-employee-opportunity-assessment, ai-readiness-checklist,
-   card-generator, wall-of-thanks): the id lives on an absolute .tg-anchor div 150px
+/* Section anchor offsets (ai-employee-opportunity-assessment, make-room-for-pie,
+   ai-readiness-checklist, card-generator, wall-of-thanks): the id lives on an absolute .tg-anchor div 150px
    above the section, NOT on the section itself (sections keep their sec* ids for JS
    and internal links). Sections must be position:relative for the offset to anchor to
    them -- .tg-sec and .tgg already are, reinforced here. The div is 1x1px and
